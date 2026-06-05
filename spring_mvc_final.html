@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고급 웹프로그래밍 — 시험 대비 완전 정복</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0e1a; --bg2:#0f1525; --bg3:#141e30; --card:#111827;
+  --border:rgba(99,179,237,0.1); --border2:rgba(99,179,237,0.22);
+  --accent:#63b3ed; --accent2:#4fd1c5; --accent3:#f6ad55; --accent4:#fc8181; --accent5:#b794f4;
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#4a5568;
+  --code:#0d1117;
+  --kw:#c792ea; --an:#ffcb6b; --st:#c3e88d; --cm:#546e7a; --cl:#82aaff; --nr:#f78c6c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.7}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;width:230px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:200;overflow:hidden}
+.sb-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
+.sb-logo .t1{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+.sb-logo .t2{font-size:11px;color:var(--text3);margin-top:3px}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 0}
+.sb-nav::-webkit-scrollbar{width:3px}
+.sb-nav::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sb-sec{padding:10px 16px 4px;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace}
+.sb-item{display:flex;align-items:center;gap:9px;padding:7px 16px;font-size:12.5px;color:var(--text2);cursor:pointer;border-left:2px solid transparent;transition:all .15s;text-decoration:none}
+.sb-item:hover{color:var(--text);background:rgba(99,179,237,0.05)}
+.sb-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(99,179,237,0.07)}
+.sb-dot{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.5;flex-shrink:0}
+
+/* MAIN */
+.main{margin-left:230px;min-height:100vh}
+
+/* HERO */
+.hero{padding:52px 56px 44px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;background:linear-gradient(135deg,#0a0e1a 0%,#0c1320 60%,#0f1a2e 100%)}
+.hero::after{content:'';position:absolute;top:-100px;right:-60px;width:500px;height:500px;background:radial-gradient(circle,rgba(99,179,237,0.05) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::before{content:'';width:18px;height:1px;background:var(--accent)}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:10px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-sub{font-size:14px;color:var(--text2);margin-bottom:24px;max-width:520px}
+.tag-row{display:flex;flex-wrap:wrap;gap:7px}
+.tag{font-size:11.5px;font-family:'IBM Plex Mono',monospace;padding:4px 11px;border-radius:4px;border:1px solid var(--border2);color:var(--text2);background:rgba(99,179,237,0.04)}
+.tag.hi{border-color:rgba(99,179,237,0.4);color:var(--accent)}
+
+/* SECTION */
+.sec{padding:44px 56px;border-bottom:1px solid var(--border)}
+.sec:last-child{border-bottom:none}
+.sec-hd{display:flex;align-items:flex-start;gap:14px;margin-bottom:28px}
+.wk-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;padding:5px 9px;border-radius:4px;background:rgba(99,179,237,0.08);border:1px solid rgba(99,179,237,0.18);color:var(--accent);letter-spacing:.06em;white-space:nowrap;margin-top:4px;flex-shrink:0}
+.sec-title{font-size:20px;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+.sec-sub{font-size:12px;color:var(--text3);margin-top:3px;font-family:'IBM Plex Mono',monospace}
+
+/* PATTERN CARD — 핵심 패턴 공식집 */
+.pattern-grid{display:grid;gap:14px;margin-bottom:18px}
+.pattern-grid.c2{grid-template-columns:1fr 1fr}
+.pattern-grid.c3{grid-template-columns:1fr 1fr 1fr}
+
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .2s}
+.pcard:hover{border-color:var(--border2)}
+.pcard-head{padding:11px 16px 0;display:flex;align-items:center;gap:8px}
+.pcard-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:3px}
+.lbl-blue{background:rgba(99,179,237,0.1);color:var(--accent);border:1px solid rgba(99,179,237,0.2)}
+.lbl-green{background:rgba(79,209,197,0.1);color:var(--accent2);border:1px solid rgba(79,209,197,0.2)}
+.lbl-orange{background:rgba(246,173,85,0.1);color:var(--accent3);border:1px solid rgba(246,173,85,0.2)}
+.lbl-red{background:rgba(252,129,129,0.1);color:var(--accent4);border:1px solid rgba(252,129,129,0.2)}
+.lbl-purple{background:rgba(183,148,244,0.1);color:var(--accent5);border:1px solid rgba(183,148,244,0.2)}
+.star{font-size:11px;color:var(--accent3);margin-left:auto}
+
+.pcard pre{background:var(--code);padding:12px 16px 14px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.75;overflow-x:auto;margin:8px 0 0}
+.pcard .result-bar{background:rgba(79,209,197,0.06);border-top:1px solid rgba(79,209,197,0.15);padding:9px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#99f6e4;display:flex;align-items:flex-start;gap:8px}
+.result-bar::before{content:'▶';font-size:9px;color:var(--accent2);margin-top:2px;flex-shrink:0}
+.pcard .note{padding:9px 16px 12px;font-size:12.5px;color:var(--text2);line-height:1.65}
+.pcard .note strong{color:var(--text)}
+.pcard .note code{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--st);background:rgba(195,232,141,0.08);padding:1px 5px;border-radius:3px}
+
+/* COMPARE TABLE */
+.cmp{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+.cmp th{background:var(--bg3);padding:9px 14px;text-align:left;font-weight:600;color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;border-bottom:1.5px solid var(--border2)}
+.cmp td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.55}
+.cmp tr:hover td{background:rgba(99,179,237,0.02)}
+.cmp .em{color:var(--text);font-weight:500}
+.cmp .g{color:var(--accent2)} .cmp .r{color:var(--accent4)} .cmp .o{color:var(--accent3)}
+
+/* FLOW */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:5px;padding:13px 16px;background:var(--bg3);border-radius:8px;margin:12px 0;border:1px solid var(--border)}
+.fn{font-family:'IBM Plex Mono',monospace;font-size:11.5px;padding:4px 11px;border-radius:4px;background:rgba(99,179,237,0.1);border:1px solid rgba(99,179,237,0.2);color:var(--accent);white-space:nowrap}
+.fn.g{background:rgba(79,209,197,0.08);border-color:rgba(79,209,197,0.2);color:var(--accent2)}
+.fn.gray{background:rgba(148,163,184,0.07);border-color:rgba(148,163,184,0.15);color:var(--text2)}
+.fa{color:var(--text3);font-size:13px}
+
+/* PITFALL BOX */
+.pitfall{margin:12px 0;border-radius:8px;padding:11px 16px;font-size:13px;line-height:1.65;display:flex;gap:10px;align-items:flex-start}
+.pitfall.warn{background:rgba(246,173,85,0.06);border:1px solid rgba(246,173,85,0.18);color:#fde68a}
+.pitfall.info{background:rgba(99,179,237,0.06);border:1px solid rgba(99,179,237,0.15);color:#bfdbfe}
+.pitfall.ok{background:rgba(79,209,197,0.06);border:1px solid rgba(79,209,197,0.15);color:#99f6e4}
+.pitfall .ico{flex-shrink:0;font-size:14px;margin-top:1px}
+.pitfall code{font-family:'IBM Plex Mono',monospace;font-size:11.5px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px}
+
+/* EXAM */
+#exam{background:var(--bg2)}
+.exam-list{display:grid;gap:12px}
+.eq{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .2s}
+.eq:hover{border-color:var(--border2)}
+.eq-hd{padding:15px 18px;cursor:pointer;display:flex;align-items:flex-start;gap:14px;user-select:none}
+.eq-hd:hover{background:rgba(99,179,237,0.025)}
+.eq-left{flex:1}
+.eq-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.eq-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px}
+.eb-hard{background:rgba(252,129,129,0.1);border:1px solid rgba(252,129,129,0.22);color:var(--accent4)}
+.eb-mid{background:rgba(246,173,85,0.1);border:1px solid rgba(246,173,85,0.22);color:var(--accent3)}
+.eq-wk{font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace}
+.eq-q{font-size:13.5px;color:var(--text);line-height:1.55;font-weight:500}
+.eq-toggle{width:26px;height:26px;border-radius:50%;background:rgba(99,179,237,0.06);border:1px solid var(--border2);color:var(--accent);font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s,background .2s;margin-top:1px;line-height:1}
+.eq.open .eq-toggle{transform:rotate(45deg);background:rgba(99,179,237,0.12)}
+.eq-body{display:none;padding:0 18px 16px;border-top:1px solid var(--border)}
+.eq.open .eq-body{display:block}
+.eq-code{background:var(--code);border:1px solid var(--border);border-radius:6px;padding:12px 15px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.75;overflow-x:auto;margin:12px 0;color:var(--text2)}
+.ans-box{background:rgba(79,209,197,0.04);border:1px solid rgba(79,209,197,0.18);border-radius:8px;padding:13px 16px;margin-top:10px}
+.ans-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--accent2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.ans-lbl::before{content:'▶';font-size:8px}
+.ans-txt{font-size:13px;color:#a7f3d0;line-height:1.8;font-family:'IBM Plex Mono',monospace;white-space:pre-wrap}
+
+/* variants comparison */
+.var-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.var-card{border-radius:7px;overflow:hidden;border:1px solid var(--border)}
+.var-head{padding:7px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.05em}
+.var-head.a{background:rgba(99,179,237,0.1);color:var(--accent)}
+.var-head.b{background:rgba(246,173,85,0.1);color:var(--accent3)}
+.var-body{background:var(--code);padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.7;color:var(--text2)}
+.var-result{padding:7px 12px;font-family:'IBM Plex Mono',monospace;font-size:11.5px}
+.var-result.a{background:rgba(99,179,237,0.05);color:var(--accent)}
+.var-result.b{background:rgba(246,173,85,0.05);color:var(--accent3)}
+
+/* roadmap */
+.rm-row{display:grid;grid-template-columns:90px 1fr;gap:14px;align-items:start;padding:12px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.rm-row:last-child{border-bottom:none}
+.rm-wk{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);font-weight:600;padding-top:1px}
+.rm-txt{color:var(--text2);line-height:1.6}
+.rm-txt strong{color:var(--text)}
+.rm-txt code{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--st);background:rgba(195,232,141,0.07);padding:1px 4px;border-radius:3px}
+
+/* syntax colors */
+.kw{color:#c792ea}.an{color:#ffcb6b}.st{color:#c3e88d}.cm{color:#546e7a;font-style:italic}.cl{color:#82aaff}.nr{color:#f78c6c}.op{color:#89ddff}
+
+@media(max-width:860px){.sidebar{display:none}.main{margin-left:0}.sec,.hero{padding:32px 20px}.pattern-grid.c2,.pattern-grid.c3{grid-template-columns:1fr}.var-grid{grid-template-columns:1fr}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec{animation:fadeUp .35s ease both}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="t1">Spring MVC</div>
+    <div class="t2">시험 대비 완전 정복</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-sec">핵심 패턴 공식</div>
+    <a class="sb-item active" href="#w9" onclick="sa(this)"><span class="sb-dot"></span>9주차 — MVC 흐름</a>
+    <a class="sb-item" href="#w10" onclick="sa(this)"><span class="sb-dot"></span>10주차 — 파라미터·VO</a>
+    <a class="sb-item" href="#w11" onclick="sa(this)"><span class="sb-dot"></span>11주차 — DB·BCrypt</a>
+    <a class="sb-item" href="#w12" onclick="sa(this)"><span class="sb-dot"></span>12주차 — 쿠키·세션</a>
+    <a class="sb-item" href="#w13" onclick="sa(this)"><span class="sb-dot"></span>13주차 — Docker</a>
+    <div class="sb-sec" style="margin-top:10px">비교·정리</div>
+    <a class="sb-item" href="#compare" onclick="sa(this)"><span class="sb-dot" style="background:var(--accent2)"></span>헷갈리는 개념 비교</a>
+    <a class="sb-item" href="#roadmap" onclick="sa(this)"><span class="sb-dot" style="background:var(--accent2)"></span>전체 흐름 로드맵</a>
+    <div class="sb-sec" style="margin-top:10px">시험</div>
+    <a class="sb-item" href="#exam" onclick="sa(this)"><span class="sb-dot" style="background:var(--accent3)"></span>예상 시험 문제</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">고급 웹프로그래밍 기말 대비</div>
+  <h1>코드 보면 <em>결과가 보인다</em></h1>
+  <p class="hero-sub">개념 소개가 아닌, <strong>코드 → 결과값 패턴</strong> · <strong>헷갈리는 개념 비교</strong> · <strong>변형 예시</strong> 중심으로 구성</p>
+  <div class="tag-row">
+    <span class="tag hi">★★★ = 시험 1순위</span>
+    <span class="tag">▶ = 출력 결과</span>
+    <span class="tag">⚠ = 함정 포인트</span>
+    <span class="tag">↔ = 자주 헷갈리는 비교</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     9주차 — MVC 흐름 · ViewResolver · Model
+═══════════════════════════════════════════════════ -->
+<section class="sec" id="w9">
+  <div class="sec-hd">
+    <span class="wk-badge">9주차</span>
+    <div>
+      <div class="sec-title">MVC 흐름 · ViewResolver · Model</div>
+      <div class="sec-sub">@Controller · @GetMapping · return · Model.addAttribute</div>
+    </div>
+  </div>
+
+  <!-- 패턴 1: return 값과 ViewResolver -->
+  <div class="pattern-grid c2">
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-blue">패턴 ①</span><span class="star">★★★</span></div>
+      <pre><span class="an">@GetMapping</span>(<span class="st">"/"</span>)
+<span class="kw">public</span> String home(Model model) {
+    model.addAttribute(<span class="st">"msg"</span>, <span class="st">"안녕!"</span>);
+    <span class="kw">return</span> <span class="st">"home"</span>;
+}</pre>
+      <div class="result-bar">ViewResolver → /WEB-INF/views/home.jsp 실행<br>JSP의 ${msg} → "안녕!" 출력</div>
+      <div class="note">return "home" = View 이름. <strong>prefix + "home" + suffix</strong> 로 실제 경로 조합.<br>application.properties: <code>prefix=/WEB-INF/views/</code> <code>suffix=.jsp</code></div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-orange">패턴 ② return 변형</span><span class="star">★★★</span></div>
+      <pre><span class="cm">// 케이스 A: return "home"</span>
+<span class="kw">return</span> <span class="st">"home"</span>;
+<span class="cm">// → ViewResolver 거쳐 home.jsp 렌더링
+// → URL은 그대로 유지됨</span>
+
+<span class="cm">// 케이스 B: return "redirect:/"</span>
+<span class="kw">return</span> <span class="st">"redirect:/"</span>;
+<span class="cm">// → ViewResolver 안 거침
+// → 브라우저가 "/" 로 새 GET 요청
+// → URL이 "/" 로 바뀜</span></pre>
+      <div class="result-bar">A: URL 유지, JSP 렌더링 | B: URL "/" 로 변경, 새 요청</div>
+    </div>
+  </div>
+
+  <!-- MVC 전체 흐름 -->
+  <div class="pcard" style="margin-bottom:14px">
+    <div class="pcard-head"><span class="pcard-label lbl-blue">MVC 전체 흐름</span><span class="star">★★★</span></div>
+    <div style="padding:12px 16px 14px">
+      <div class="flow">
+        <span class="fn gray">클라이언트</span><span class="fa">→</span>
+        <span class="fn">DispatcherServlet</span><span class="fa">→</span>
+        <span class="fn">HandlerMapping</span><span class="fa">→</span>
+        <span class="fn">HandlerAdapter</span><span class="fa">→</span>
+        <span class="fn g">Controller</span><span class="fa">→</span>
+        <span class="fn g">Service→DAO→DB</span>
+      </div>
+      <div class="flow">
+        <span class="fn gray">결과</span><span class="fa">→</span>
+        <span class="fn g">Controller (return "뷰명")</span><span class="fa">→</span>
+        <span class="fn">ViewResolver</span><span class="fa">→</span>
+        <span class="fn">View (JSP)</span><span class="fa">→</span>
+        <span class="fn gray">브라우저 응답</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px;font-size:12.5px;color:var(--text2)">
+        <div><span style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11px">HandlerMapping</span><br>@GetMapping 애너테이션을 읽어 어떤 Controller 메소드를 실행할지 결정</div>
+        <div><span style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11px">HandlerAdapter</span><br>실제로 Controller의 메소드를 호출하는 실행 담당 객체</div>
+        <div><span style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11px">ViewResolver</span><br>return "home" → /WEB-INF/views/home.jsp 경로로 변환</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pitfall warn"><span class="ico">⚠</span><div>Controller의 <code>return</code>은 <strong>View 이름만</strong> 반환 가능. 데이터는 반드시 <code>Model</code>을 통해 전달. return으로 데이터를 넘기려 하면 안 됨!</div></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     10주차 — @RequestParam · VO · @Autowired
+═══════════════════════════════════════════════════ -->
+<section class="sec" id="w10">
+  <div class="sec-hd">
+    <span class="wk-badge">10주차</span>
+    <div>
+      <div class="sec-title">@RequestParam · VO 자동 매핑 · @Autowired</div>
+      <div class="sec-sub">파라미터 수신 · 타입 변환 · 계층 분리</div>
+    </div>
+  </div>
+
+  <div class="pattern-grid c2">
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-blue">패턴 ③ @RequestParam 타입변환</span><span class="star">★★★</span></div>
+      <pre><span class="cm">// URL: /check?name=홍길동&age=17</span>
+<span class="an">@GetMapping</span>(<span class="st">"/check"</span>)
+<span class="kw">public</span> String check(
+    <span class="an">@RequestParam</span> String name,
+    <span class="an">@RequestParam</span> <span class="kw">int</span> age,  <span class="cm">// String→int 자동!</span>
+    Model model) {
+  String r = (age >= <span class="nr">20</span>) ? <span class="st">"성인"</span> : <span class="st">"미성년"</span>;
+  model.addAttribute(<span class="st">"result"</span>, name + <span class="st">"은 "</span> + r);
+  <span class="kw">return</span> <span class="st">"result"</span>;
+}
+<span class="cm">// [result.jsp]  ${result}</span></pre>
+      <div class="result-bar">홍길동은 미성년</div>
+      <div class="note">URL의 "17"(String) → int 17 자동 변환. <strong>age &gt;= 20</strong> 조건 false → "미성년"</div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-green">패턴 ④ VO 자동 매핑 (setter)</span><span class="star">★★</span></div>
+      <pre><span class="cm">// form: &lt;input name="name"&gt;&lt;input name="age"&gt;</span>
+<span class="an">@GetMapping</span>(<span class="st">"/info"</span>)
+<span class="kw">public</span> String info(<span class="cl">MemberVO</span> memberVo, Model model) {
+    <span class="cm">// form name값이 setName(), setAge()와</span>
+    <span class="cm">// 매핑되어 자동으로 값이 들어옴!</span>
+    model.addAttribute(<span class="st">"name"</span>, memberVo.getName());
+    model.addAttribute(<span class="st">"age"</span>, memberVo.getAge());
+    <span class="kw">return</span> <span class="st">"info"</span>;
+}</pre>
+      <div class="result-bar">memberVo.getName() = "홍길동", getAge() = 30</div>
+      <div class="note">form의 <code>name="age"</code> → <code>setAge()</code> 자동 호출. <strong>setter 이름과 input name이 반드시 일치</strong>해야 함</div>
+    </div>
+  </div>
+
+  <div class="pattern-grid c2">
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-purple">패턴 ⑤ @Autowired 계층 주입</span><span class="star">★★★</span></div>
+      <pre><span class="an">@Controller</span>
+<span class="kw">public class</span> <span class="cl">MemberController</span> {
+    <span class="an">@Autowired</span>
+    <span class="cl">MemberService</span> memberService; <span class="cm">// Spring 자동 주입</span>
+}
+<span class="an">@Service</span>
+<span class="kw">public class</span> <span class="cl">MemberService</span> {
+    <span class="an">@Autowired</span>
+    <span class="cl">MemberDao</span> memberDao;
+}
+<span class="an">@Service</span> <span class="cm">// DAO도 @Service로 Bean 등록</span>
+<span class="kw">public class</span> <span class="cl">MemberDao</span> {
+    Map&lt;String, <span class="cl">MemberVO</span>&gt; memberDB = <span class="kw">new</span> HashMap&lt;&gt;();
+}</pre>
+      <div class="result-bar">@Autowired → new MemberService() 없이 Spring이 알아서 생성·주입</div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-orange">패턴 ⑥ Controller→Service→DAO 흐름</span><span class="star">★★★</span></div>
+      <pre><span class="cm">// Controller</span>
+memberService.inputInfoConfirm(memberVo);
+
+<span class="cm">// MemberService</span>
+<span class="kw">public int</span> inputInfoConfirm(<span class="cl">MemberVO</span> memberVo) {
+    System.out.println(<span class="st">"[Service] inputInfoConfirm"</span>);
+    System.out.println(<span class="st">"name: "</span> + memberVo.getName());
+    memberDao.insertMember(memberVo);
+    <span class="kw">return</span> <span class="nr">0</span>;
+}
+<span class="cm">// MemberDao</span>
+<span class="kw">public void</span> insertMember(<span class="cl">MemberVO</span> memberVo) {
+    System.out.println(<span class="st">"[DAO] inputInfo()"</span>);
+    memberDB.put(memberVo.getName(), memberVo);
+}</pre>
+      <div class="result-bar">[Service] inputInfoConfirm<br>name: 홍길동<br>[DAO] inputInfo()</div>
+    </div>
+  </div>
+
+  <div class="pitfall warn"><span class="ico">⚠</span><div>VO 자동 매핑: form의 <code>&lt;input name="age"&gt;</code> 에서 name 값과 VO의 <code>setAge()</code> 에서 "Age" 부분이 정확히 일치해야 한다. 오타 시 null 또는 0이 들어옴.</div></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     11주차 — DB · JdbcTemplate · BCrypt · @PathVariable
+═══════════════════════════════════════════════════ -->
+<section class="sec" id="w11">
+  <div class="sec-hd">
+    <span class="wk-badge">11주차</span>
+    <div>
+      <div class="sec-title">DB 연동 · JdbcTemplate · BCrypt · @PathVariable</div>
+      <div class="sec-sub">MariaDB · update · query · queryForObject · PasswordEncoder</div>
+    </div>
+  </div>
+
+  <div class="pattern-grid c2">
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-blue">패턴 ⑦ JdbcTemplate INSERT</span><span class="star">★★★</span></div>
+      <pre>String sql =
+  <span class="st">"INSERT INTO member (id,pw,name,age,city)"</span>
+  + <span class="st">" VALUES (?,?,?,?,?)"</span>;
+
+jdbcTemplate.update(sql,
+    memberVo.getId(),
+    memberVo.getPw(),
+    memberVo.getName(),
+    memberVo.getAge(),
+    memberVo.getCity());</pre>
+      <div class="result-bar">DB에 행 삽입. ? 자리에 순서대로 값 바인딩</div>
+      <div class="note"><code>update()</code> = INSERT / UPDATE / DELETE 에 사용. 반환값은 영향받은 행 수(int)</div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-green">패턴 ⑧ JdbcTemplate SELECT ALL</span><span class="star">★★★</span></div>
+      <pre>String sql = <span class="st">"SELECT * FROM member"</span>;
+
+jdbcTemplate.query(sql, (rs) -> {
+    System.out.println(
+        <span class="st">"id : "</span> + rs.getString(<span class="st">"id"</span>));
+    System.out.println(
+        <span class="st">"age: "</span> + rs.getInt(<span class="st">"age"</span>));
+});</pre>
+      <div class="result-bar">id : user1<br>age: 30<br>id : user2 ... (행 수만큼 반복)</div>
+      <div class="note">람다 <code>(rs) -&gt; {}</code> 안에서 ResultSet으로 각 행 처리. String → <code>getString()</code>, int → <code>getInt()</code></div>
+    </div>
+  </div>
+
+  <div class="pattern-grid c2" style="margin-top:0">
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-orange">패턴 ⑨ queryForObject — 로그인 조회</span><span class="star">★★★</span></div>
+      <pre>String sql =
+  <span class="st">"SELECT * FROM member WHERE id=? AND pw=?"</span>;
+<span class="kw">try</span> {
+    <span class="cl">MemberVO</span> m = jdbcTemplate.queryForObject(
+        sql,
+        (rs, rowNum) -> {
+            <span class="cl">MemberVO</span> vo = <span class="kw">new</span> <span class="cl">MemberVO</span>();
+            vo.setId(rs.getString(<span class="st">"id"</span>));
+            vo.setName(rs.getString(<span class="st">"name"</span>));
+            <span class="kw">return</span> vo;
+        },
+        memberVo.getId(), memberVo.getPw());
+    <span class="kw">return</span> m;          <span class="cm">// 로그인 성공</span>
+} <span class="kw">catch</span> (<span class="cl">EmptyResultDataAccessException</span> e) {
+    <span class="kw">return null</span>;       <span class="cm">// 로그인 실패</span>
+}</pre>
+      <div class="result-bar">일치 행 있음 → MemberVO 반환 | 없음 → null 반환</div>
+      <div class="note"><strong>결과 0건 → EmptyResultDataAccessException 발생!</strong> 반드시 try-catch로 null 처리</div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-red">패턴 ⑩ BCryptPasswordEncoder</span><span class="star">★★</span></div>
+      <pre>String raw = <span class="st">"1234"</span>;
+String enc1 = passwordEncoder.encode(raw);
+String enc2 = passwordEncoder.encode(raw);
+
+System.out.println(enc1.equals(enc2));
+<span class="cm">// → false  (매번 다른 salt 적용)</span>
+
+System.out.println(
+    passwordEncoder.matches(<span class="st">"1234"</span>, enc1));
+<span class="cm">// → true</span>
+
+System.out.println(
+    passwordEncoder.matches(<span class="st">"5678"</span>, enc1));
+<span class="cm">// → false</span></pre>
+      <div class="result-bar">false / true / false</div>
+      <div class="note"><strong>같은 입력도 encode() 결과는 매번 다름</strong>. 비교는 반드시 <code>matches(raw, encoded)</code> 사용. equals()로 비교하면 항상 false!</div>
+    </div>
+  </div>
+
+  <div class="pattern-grid c2" style="margin-top:0">
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-purple">패턴 ⑪ @PathVariable</span><span class="star">★★</span></div>
+      <pre><span class="cm">// URL: /admin/books/3</span>
+<span class="an">@GetMapping</span>(<span class="st">"/admin/books/{bookId}"</span>)
+<span class="kw">public</span> String detail(
+    <span class="an">@PathVariable</span> Long bookId,
+    Model model) {
+  System.out.println(<span class="st">"책번호: "</span> + bookId);
+  model.addAttribute(<span class="st">"bookId"</span>, bookId);
+  <span class="kw">return</span> <span class="st">"bookDetail"</span>;
+}</pre>
+      <div class="result-bar">콘솔: 책번호: 3<br>JSP: ${bookId} → 3</div>
+      <div class="note">URL 경로의 <code>{bookId}</code> 자리 값 "3" → Long 3 자동 변환</div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-blue">DB 설정 (application.properties)</span><span class="star">★★★</span></div>
+      <pre>spring.datasource.driver-class-name=
+  org.mariadb.jdbc.Driver
+spring.datasource.url=
+  jdbc:mariadb://localhost:3306/db_member
+spring.datasource.username=root
+spring.datasource.password=1234</pre>
+      <div class="note">Docker 환경에서는 <code>localhost</code> 대신 <strong>서비스명(db)</strong> 사용:<br><code>jdbc:mariadb://db:3306/library</code></div>
+    </div>
+  </div>
+
+  <div class="pitfall warn"><span class="ico">⚠</span><div><code>queryForObject</code> 결과가 0건이면 예외 발생 → Controller에서 null 체크: <code>if(loginedMember == null) return "login_ng";</code></div></div>
+  <div class="pitfall warn" style="margin-top:8px"><span class="ico">⚠</span><div>BCrypt 저장 시 DB pw 컬럼 길이 부족 → <code>ALTER TABLE member MODIFY pw VARCHAR(255);</code> 필수!</div></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     12주차 — 쿠키 · 세션
+═══════════════════════════════════════════════════ -->
+<section class="sec" id="w12">
+  <div class="sec-hd">
+    <span class="wk-badge">12주차</span>
+    <div>
+      <div class="sec-title">쿠키 · 세션 · 로그인 유지</div>
+      <div class="sec-sub">HttpSession · Cookie · session.invalidate · redirect</div>
+    </div>
+  </div>
+
+  <div class="pattern-grid c2">
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-blue">패턴 ⑫ HttpSession 로그인</span><span class="star">★★★</span></div>
+      <pre><span class="an">@GetMapping</span>(<span class="st">"/member/login"</span>)
+<span class="kw">public</span> String login(
+    <span class="cl">MemberVO</span> memberVo, Model model,
+    <span class="cl">HttpSession</span> session) {
+
+  <span class="cl">MemberVO</span> m = memberService.loginConfirm(memberVo);
+
+  <span class="kw">if</span> (m == <span class="kw">null</span>) {
+    <span class="kw">return</span> <span class="st">"login_ng"</span>;
+  } <span class="kw">else</span> {
+    session.setAttribute(<span class="st">"loginedMember"</span>, m);
+    session.setMaxInactiveInterval(<span class="nr">60</span> * <span class="nr">30</span>);
+    model.addAttribute(<span class="st">"name"</span>, m.getName());
+    <span class="kw">return</span> <span class="st">"login_ok"</span>;
+  }
+}</pre>
+      <div class="result-bar">성공: session에 MemberVO 저장 → login_ok.jsp<br>실패: null 반환 → login_ng.jsp</div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-orange">패턴 ⑬ 로그아웃 + redirect</span><span class="star">★★★</span></div>
+      <pre><span class="an">@GetMapping</span>(<span class="st">"/member/logout"</span>)
+<span class="kw">public</span> String logout(<span class="cl">HttpSession</span> session) {
+  session.invalidate(); <span class="cm">// 세션 전체 삭제</span>
+  <span class="kw">return</span> <span class="st">"redirect:/"</span>; <span class="cm">// 홈으로 리다이렉트</span>
+}
+
+<span class="cm">/* return "home"  과의 차이:
+   "home"      → ViewResolver → home.jsp 렌더링
+               → URL: /member/logout 유지
+   "redirect:/" → 브라우저에 302 응답
+               → 브라우저가 "/" 로 새 GET 요청
+               → URL: "/" 로 변경됨           */</span></pre>
+      <div class="result-bar">세션 삭제 후 브라우저 URL "/" 로 이동</div>
+    </div>
+  </div>
+
+  <div class="pattern-grid c2">
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-green">패턴 ⑭ Cookie 생성·읽기</span><span class="star">★★</span></div>
+      <pre><span class="cm">// 쿠키 쓰기</span>
+Cookie c = <span class="kw">new</span> Cookie(<span class="st">"loginCount"</span>,
+                 String.valueOf(newCount));
+c.setPath(<span class="st">"/"</span>);
+c.setMaxAge(<span class="nr">60</span> * <span class="nr">60</span> * <span class="nr">24</span> * <span class="nr">365</span>); <span class="cm">// 1년</span>
+response.addCookie(c);
+
+<span class="cm">// 쿠키 읽기</span>
+Cookie[] cookies = request.getCookies();
+<span class="kw">if</span> (cookies != <span class="kw">null</span>) {
+  <span class="kw">for</span> (Cookie cookie : cookies) {
+    <span class="kw">if</span> (<span class="st">"loginCount"</span>.equals(cookie.getName()))
+      <span class="kw">return</span> Integer.parseInt(cookie.getValue());
+  }
+}
+<span class="kw">return</span> <span class="nr">0</span>; <span class="cm">// 쿠키 없으면 0</span></pre>
+      <div class="result-bar">브라우저에 쿠키 저장. 재방문 시 카운트 유지</div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-purple">패턴 ⑮ JSP에서 세션 사용 (JSTL)</span><span class="star">★★</span></div>
+      <pre><span class="cm">&lt;%@ taglib prefix="c"
+   uri="jakarta.tags.core" %&gt;</span>
+
+<span class="st">&lt;c:choose&gt;</span>
+ <span class="st">&lt;c:when test=</span>
+  <span class="nr">"${not empty sessionScope.loginedMember}"</span><span class="st">&gt;</span>
+  <span class="cm">&lt;!-- 로그인 상태 --&gt;</span>
+  ${sessionScope.loginedMember.name}님
+  <span class="st">&lt;a href="/member/logout"&gt;</span>로그아웃<span class="st">&lt;/a&gt;</span>
+ <span class="st">&lt;/c:when&gt;</span>
+ <span class="st">&lt;c:otherwise&gt;</span>
+  <span class="st">&lt;a href="/auth/signIn"&gt;</span>로그인<span class="st">&lt;/a&gt;</span>
+ <span class="st">&lt;/c:otherwise&gt;</span>
+<span class="st">&lt;/c:choose&gt;</span></pre>
+      <div class="result-bar">로그인 시: "홍길동님 로그아웃" | 비로그인 시: "로그인" 링크</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     13주차 — Docker
+═══════════════════════════════════════════════════ -->
+<section class="sec" id="w13">
+  <div class="sec-hd">
+    <span class="wk-badge">13주차</span>
+    <div>
+      <div class="sec-title">Docker · Dockerfile · docker-compose</div>
+      <div class="sec-sub">컨테이너 · 이미지 · 멀티스테이지 빌드 · 서비스 네트워크</div>
+    </div>
+  </div>
+
+  <div class="pattern-grid c2">
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-blue">패턴 ⑯ Dockerfile 멀티스테이지</span><span class="star">★★</span></div>
+      <pre><span class="cm"># 빌드 단계</span>
+<span class="kw">FROM</span> eclipse-temurin:25-jdk <span class="kw">AS</span> build
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> pom.xml mvnw ./
+<span class="kw">COPY</span> .mvn .mvn
+<span class="kw">RUN</span> chmod +x mvnw
+<span class="kw">RUN</span> ./mvnw -q -DskipTests package
+
+<span class="cm"># 실행 단계</span>
+<span class="kw">FROM</span> eclipse-temurin:25-jdk
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> --from=build \
+  /app/target/mylibrary-0.0.1-SNAPSHOT.war \
+  app.war
+<span class="kw">EXPOSE</span> <span class="nr">8090</span>
+<span class="kw">ENTRYPOINT</span> ["java", "-jar", "app.war"]</pre>
+      <div class="result-bar">mvnw package로 war 빌드 → 실행 이미지에 복사 → 포트 8090 노출</div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-head"><span class="pcard-label lbl-green">패턴 ⑰ docker-compose.yml 핵심</span><span class="star">★★</span></div>
+      <pre><span class="kw">app</span>:
+  build: .
+  container_name: mylibrary-app
+  depends_on:
+    db:
+      condition: service_healthy
+  environment:
+    <span class="cm"># localhost 아닌 서비스명 "db" !</span>
+    SPRING_DATASOURCE_URL:
+      <span class="st">jdbc:mariadb://db:3306/library</span>
+    SPRING_DATASOURCE_USERNAME: root
+    SPRING_DATASOURCE_PASSWORD: <span class="nr">1234</span>
+    SERVER_PORT: <span class="nr">8090</span>
+  ports:
+    - <span class="st">"8090:8090"</span>  <span class="cm"># 호스트:컨테이너</span></pre>
+      <div class="result-bar">DB 준비 완료 후 앱 시작. 컨테이너 내부에서 DB는 "db" 주소로 접근</div>
+      <div class="note"><code>depends_on: service_healthy</code> = DB가 완전히 준비된 후 앱 시작<br>컨테이너 안에서 <strong>localhost = 자기 자신</strong>이므로 DB는 <strong>서비스명(db)</strong>으로 접근</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     헷갈리는 개념 비교
+═══════════════════════════════════════════════════ -->
+<section class="sec" id="compare">
+  <div class="sec-hd">
+    <span class="wk-badge" style="background:rgba(79,209,197,0.08);border-color:rgba(79,209,197,0.2);color:var(--accent2)">비교 정리</span>
+    <div>
+      <div class="sec-title">자주 헷갈리는 개념 비교</div>
+      <div class="sec-sub">↔ 나란히 보면 차이가 명확해지는 것들</div>
+    </div>
+  </div>
+
+  <!-- 비교 1: @RequestParam vs @PathVariable -->
+  <div class="pcard" style="margin-bottom:14px">
+    <div class="pcard-head"><span class="pcard-label lbl-blue">↔ @RequestParam vs @PathVariable</span><span class="star">★★★</span></div>
+    <div class="var-grid">
+      <div class="var-card">
+        <div class="var-head a">@RequestParam — 쿼리스트링</div>
+        <div class="var-body"><span class="cm">// URL: /check?name=홍길동&age=17</span>
+<span class="an">@GetMapping</span>(<span class="st">"/check"</span>)
+<span class="kw">public</span> String check(
+    <span class="an">@RequestParam</span> String name,
+    <span class="an">@RequestParam</span> <span class="kw">int</span> age) { ... }</div>
+        <div class="var-result a">? 뒤에 key=value 형태</div>
+      </div>
+      <div class="var-card">
+        <div class="var-head b">@PathVariable — URL 경로값</div>
+        <div class="var-body"><span class="cm">// URL: /books/3</span>
+<span class="an">@GetMapping</span>(<span class="st">"/books/{bookId}"</span>)
+<span class="kw">public</span> String detail(
+    <span class="an">@PathVariable</span> Long bookId) { ... }</div>
+        <div class="var-result b">/경로/{값} 형태. {} 안 이름 = 파라미터명</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 비교 2: return "view" vs return "redirect:/" -->
+  <div class="pcard" style="margin-bottom:14px">
+    <div class="pcard-head"><span class="pcard-label lbl-orange">↔ return "뷰명" vs return "redirect:URL"</span><span class="star">★★★</span></div>
+    <div class="var-grid">
+      <div class="var-card">
+        <div class="var-head a">return "login_ok"</div>
+        <div class="var-body">ViewResolver 거쳐 login_ok.jsp 렌더링
+URL 변경 없음 (/member/login 유지)
+서버 내부에서 처리</div>
+        <div class="var-result a">URL: /member/login (유지)</div>
+      </div>
+      <div class="var-card">
+        <div class="var-head b">return "redirect:/"</div>
+        <div class="var-body">브라우저에 HTTP 302 응답
+브라우저가 "/" 로 새 GET 요청 발생
+ViewResolver 거치지 않음</div>
+        <div class="var-result b">URL: / (변경됨)</div>
+      </div>
+    </div>
+    <div class="note" style="padding:10px 16px 12px">로그아웃 후 redirect를 쓰는 이유: 새로고침 시 /logout이 재실행되는 것 방지</div>
+  </div>
+
+  <!-- 비교 3: 쿠키 vs 세션 -->
+  <div class="pcard" style="margin-bottom:14px">
+    <div class="pcard-head"><span class="pcard-label lbl-green">↔ Cookie vs Session</span><span class="star">★★★</span></div>
+    <table class="cmp">
+      <tr><th>구분</th><th>Cookie</th><th>Session</th></tr>
+      <tr><td class="em">저장 위치</td><td class="r">클라이언트 (브라우저)</td><td class="g">서버 (Tomcat 메모리)</td></tr>
+      <tr><td class="em">보안</td><td class="r">취약 (브라우저에 노출)</td><td class="g">안전 (서버에 저장)</td></tr>
+      <tr><td class="em">만료 설정</td><td><code class="cm">setMaxAge(초)</code> — 직접 지정</td><td><code class="cm">setMaxInactiveInterval(초)</code> 또는 브라우저 종료</td></tr>
+      <tr><td class="em">저장 타입</td><td class="r">String만 가능</td><td class="g">Object 가능 (MemberVO 등)</td></tr>
+      <tr><td class="em">삭제 방법</td><td><code class="cm">setMaxAge(0)</code></td><td><code class="cm">session.invalidate()</code></td></tr>
+      <tr><td class="em">사용 예</td><td>로그인 횟수 카운트</td><td>로그인 상태 유지</td></tr>
+    </table>
+  </div>
+
+  <!-- 비교 4: query vs queryForObject -->
+  <div class="pcard">
+    <div class="pcard-head"><span class="pcard-label lbl-purple">↔ query() vs queryForObject()</span><span class="star">★★★</span></div>
+    <div class="var-grid">
+      <div class="var-card">
+        <div class="var-head a">query() — 여러 행</div>
+        <div class="var-body"><span class="cm">// 결과 0~N행 처리</span>
+jdbcTemplate.query(sql, (rs) -> {
+    <span class="cm">// 각 행마다 실행됨</span>
+    System.out.println(rs.getString("id"));
+});
+<span class="cm">// 결과 없어도 예외 없음</span></div>
+        <div class="var-result a">결과 없어도 예외 발생 안 함</div>
+      </div>
+      <div class="var-card">
+        <div class="var-head b">queryForObject() — 정확히 1행</div>
+        <div class="var-body"><span class="cm">// 반드시 1행이어야 함</span>
+<span class="kw">try</span> {
+  MemberVO m = jdbcTemplate
+    .queryForObject(sql, (rs, rn) -> {
+      ...
+    }, id, pw);
+} <span class="kw">catch</span> (EmptyResultDataAccessException e) {
+  <span class="kw">return null</span>; <span class="cm">// 0건 시 예외!</span>
+}</div>
+        <div class="var-result b">0건 → 예외 발생. try-catch 필수!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     전체 흐름 로드맵
+═══════════════════════════════════════════════════ -->
+<section class="sec" id="roadmap">
+  <div class="sec-hd">
+    <span class="wk-badge" style="background:rgba(79,209,197,0.08);border-color:rgba(79,209,197,0.2);color:var(--accent2)">로드맵</span>
+    <div>
+      <div class="sec-title">9~13주차 전체 흐름</div>
+      <div class="sec-sub">하나의 프로젝트가 주차별로 기능이 쌓이는 구조</div>
+    </div>
+  </div>
+  <div class="pcard">
+    <div style="padding:14px 18px">
+      <div class="rm-row"><div class="rm-wk">9주차-1</div><div class="rm-txt"><strong>Spring Boot 기본 세팅</strong> — STS, Spring Boot 프로젝트 생성, <code>HomeController</code>, <code>application.properties</code> (ViewResolver prefix/suffix, 포트, 인코딩)</div></div>
+      <div class="rm-row"><div class="rm-wk">9주차-2</div><div class="rm-txt"><strong>MVC 패턴 심화</strong> — <code>@GetMapping</code>, <code>Model.addAttribute()</code>, <code>MemberController</code> 생성, <code>@RequestParam</code>으로 signUp/signIn 처리</div></div>
+      <div class="rm-row"><div class="rm-wk">10주차-1</div><div class="rm-txt"><strong>MVC 실습 확장</strong> — <code>/member/info</code> (정보 표시), <code>/member/checkAge</code> (나이 판별 로직), <code>/member/profile</code> (미입력 처리)</div></div>
+      <div class="rm-row"><div class="rm-wk">10주차-2</div><div class="rm-txt"><strong>VO + 3계층 분리</strong> — <code>MemberVO</code> (setter 자동 매핑), <code>@Autowired</code>, <code>MemberService</code>·<code>MemberDao</code> 분리, HashMap으로 임시 DB</div></div>
+      <div class="rm-row"><div class="rm-wk">11주차-1</div><div class="rm-txt"><strong>로그인 + MariaDB 연동</strong> — <code>JdbcTemplate</code> (update/query/queryForObject), <code>BCryptPasswordEncoder</code>, <code>SecurityConfig</code>, pw 컬럼 VARCHAR(255)</div></div>
+      <div class="rm-row"><div class="rm-wk">11주차-2</div><div class="rm-txt"><strong>@PathVariable + 전자도서관 DB</strong> — <code>library</code> DB, member/book/rental 테이블 설계, 도서관 회원가입 시나리오</div></div>
+      <div class="rm-row"><div class="rm-wk">12주차-1</div><div class="rm-txt"><strong>쿠키·세션 구현</strong> — <code>HttpSession</code> 로그인 유지, <code>session.invalidate()</code> 로그아웃, <code>Cookie</code> 로그인 횟수 카운트, <code>redirect:/</code></div></div>
+      <div class="rm-row"><div class="rm-wk">12주차-2</div><div class="rm-txt"><strong>전자도서관 완성</strong> — rental 테이블, JSTL <code>c:choose</code> 로그인/비로그인 분기, 관리자·사용자 역할 구분, <code>sessionScope</code></div></div>
+      <div class="rm-row"><div class="rm-wk">13주차</div><div class="rm-txt"><strong>Docker 배포</strong> — <code>Dockerfile</code> 멀티스테이지 빌드, <code>docker-compose.yml</code> (app+db), <code>depends_on: service_healthy</code>, 서비스명으로 DB 접속</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     예상 시험 문제
+═══════════════════════════════════════════════════ -->
+<section class="sec" id="exam">
+  <div class="sec-hd">
+    <span class="wk-badge" style="background:rgba(246,173,85,0.08);border-color:rgba(246,173,85,0.22);color:var(--accent3)">시험 문제</span>
+    <div>
+      <div class="sec-title">예상 시험 문제 — 코드 결과값 분석</div>
+      <div class="sec-sub">+ 버튼으로 정답 확인 | 먼저 스스로 풀어볼 것</div>
+    </div>
+  </div>
+
+  <div class="exam-list">
+
+    <div class="eq" id="q1">
+      <div class="eq-hd" onclick="tq('q1')">
+        <div class="eq-left">
+          <div class="eq-meta"><span class="eq-badge eb-hard">★★★</span><span class="eq-wk">9주차 · ViewResolver</span></div>
+          <div class="eq-q">다음 코드에서 localhost:8090/ 접속 시 화면 출력값과 동작 원리를 단계별로 설명하라.</div>
+        </div>
+        <div class="eq-toggle">+</div>
+      </div>
+      <div class="eq-body">
+        <div class="eq-code"><span class="an">@Controller</span>
+<span class="kw">public class</span> HomeController {
+    <span class="an">@GetMapping</span>(<span class="st">"/"</span>)
+    <span class="kw">public</span> String home(Model model) {
+        model.addAttribute(<span class="st">"msg"</span>, <span class="st">"Hello Spring!"</span>);
+        <span class="kw">return</span> <span class="st">"home"</span>;
+    }
+}
+<span class="cm">// [home.jsp]  &lt;p&gt;${msg}&lt;/p&gt;</span></div>
+        <div class="ans-box">
+          <div class="ans-lbl">정답 및 원리</div>
+          <div class="ans-txt">화면 출력: &lt;p&gt;Hello Spring!&lt;/p&gt;
+
+① "/" 요청 → DispatcherServlet 수신
+② HandlerMapping → @GetMapping("/") 을 가진 home() 탐색
+③ HandlerAdapter → home(Model) 실행
+④ model.addAttribute("msg", "Hello Spring!") → msg 키 저장
+⑤ return "home" → ViewResolver →
+   prefix(/WEB-INF/views/) + "home" + suffix(.jsp)
+   = /WEB-INF/views/home.jsp
+⑥ home.jsp 실행 → ${msg} = "Hello Spring!" 치환 → 화면 출력</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq" id="q2">
+      <div class="eq-hd" onclick="tq('q2')">
+        <div class="eq-left">
+          <div class="eq-meta"><span class="eq-badge eb-hard">★★★</span><span class="eq-wk">10주차 · @RequestParam 타입변환</span></div>
+          <div class="eq-q">URL이 /member/checkAge?name=홍길동&age=17 일 때 화면 출력값과 원리를 설명하라.</div>
+        </div>
+        <div class="eq-toggle">+</div>
+      </div>
+      <div class="eq-body">
+        <div class="eq-code"><span class="an">@GetMapping</span>(<span class="st">"/member/checkAge"</span>)
+<span class="kw">public</span> String check(<span class="an">@RequestParam</span> String name,
+                    <span class="an">@RequestParam</span> <span class="kw">int</span> age, Model model) {
+    String r = (age >= <span class="nr">20</span>) ? <span class="st">"성인"</span> : <span class="st">"미성년"</span>;
+    model.addAttribute(<span class="st">"result"</span>, name + <span class="st">"은 "</span> + r);
+    <span class="kw">return</span> <span class="st">"result"</span>;
+}
+<span class="cm">// [result.jsp]  &lt;p&gt;${result}&lt;/p&gt;</span></div>
+        <div class="ans-box">
+          <div class="ans-lbl">정답 및 원리</div>
+          <div class="ans-txt">화면 출력: &lt;p&gt;홍길동은 미성년&lt;/p&gt;
+
+① @RequestParam String name → "홍길동"
+② @RequestParam int age → URL의 "17"(String)이 int 17로 자동 변환
+③ 17 >= 20 → false → r = "미성년"
+④ model.addAttribute("result", "홍길동은 미성년")
+⑤ return "result" → /WEB-INF/views/result.jsp
+⑥ ${result} = "홍길동은 미성년" 출력
+
+★ age=20 이면? → r = "성인" → "홍길동은 성인"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq" id="q3">
+      <div class="eq-hd" onclick="tq('q3')">
+        <div class="eq-left">
+          <div class="eq-meta"><span class="eq-badge eb-hard">★★★</span><span class="eq-wk">11주차 · queryForObject</span></div>
+          <div class="eq-q">DB에 id="user1", pw=BCrypt("1234") 가 저장되어 있다. 아래 코드에서 id="user1", pw="wrongpw" 로 호출 시 반환값과 이유를 설명하라.</div>
+        </div>
+        <div class="eq-toggle">+</div>
+      </div>
+      <div class="eq-body">
+        <div class="eq-code">String sql = <span class="st">"SELECT * FROM member WHERE id=? AND pw=?"</span>;
+<span class="kw">try</span> {
+    MemberVO m = jdbcTemplate.queryForObject(sql,
+        (rs, rowNum) -> {
+            MemberVO vo = <span class="kw">new</span> MemberVO();
+            vo.setId(rs.getString(<span class="st">"id"</span>));
+            vo.setName(rs.getString(<span class="st">"name"</span>));
+            <span class="kw">return</span> vo;
+        }, <span class="st">"user1"</span>, <span class="st">"wrongpw"</span>);
+    <span class="kw">return</span> m;
+} <span class="kw">catch</span> (EmptyResultDataAccessException e) {
+    <span class="kw">return null</span>;
+}</div>
+        <div class="ans-box">
+          <div class="ans-lbl">정답 및 원리</div>
+          <div class="ans-txt">반환값: null
+
+① id="user1", pw="wrongpw" 로 SQL 실행
+② DB에 저장된 pw = BCrypt 해시값 (예: $2a$10$...)
+   "wrongpw" 문자열과 다름 → WHERE 조건 불일치
+③ 결과 행 0건 → queryForObject()가
+   EmptyResultDataAccessException 발생
+④ catch 블록 실행 → null 반환
+⑤ Controller: if(loginedMember == null) return "login_ng"
+
+※ BCrypt 사용 시 올바른 방법:
+   SELECT * FROM member WHERE id=? 로만 조회 후
+   passwordEncoder.matches(rawPw, dbPw) 로 비교!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq" id="q4">
+      <div class="eq-hd" onclick="tq('q4')">
+        <div class="eq-left">
+          <div class="eq-meta"><span class="eq-badge eb-hard">★★★</span><span class="eq-wk">11주차 · BCrypt encode/matches</span></div>
+          <div class="eq-q">아래 코드의 (A), (B), (C) 출력값을 각각 쓰고 이유를 설명하라.</div>
+        </div>
+        <div class="eq-toggle">+</div>
+      </div>
+      <div class="eq-body">
+        <div class="eq-code">String enc1 = passwordEncoder.encode(<span class="st">"1234"</span>);
+String enc2 = passwordEncoder.encode(<span class="st">"1234"</span>);
+
+System.out.println(enc1.equals(enc2));                    <span class="cm">// (A)</span>
+System.out.println(passwordEncoder.matches(<span class="st">"1234"</span>, enc1)); <span class="cm">// (B)</span>
+System.out.println(passwordEncoder.matches(<span class="st">"5678"</span>, enc1)); <span class="cm">// (C)</span></div>
+        <div class="ans-box">
+          <div class="ans-lbl">정답 및 원리</div>
+          <div class="ans-txt">(A) false
+    BCrypt는 encode() 시 매번 다른 랜덤 salt 생성
+    → enc1 ≠ enc2 (같은 "1234"여도)
+
+(B) true
+    matches("1234", enc1):
+    enc1 안에 내장된 salt를 꺼내 "1234"에 적용하여
+    해시 비교 → 원문이 같으므로 true
+
+(C) false
+    "5678"의 해시가 enc1과 다름 → false
+
+핵심: equals()로 두 encoded 값 비교 → 항상 false
+     비교는 반드시 matches(rawPw, encodedPw) 사용!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq" id="q5">
+      <div class="eq-hd" onclick="tq('q5')">
+        <div class="eq-left">
+          <div class="eq-meta"><span class="eq-badge eb-hard">★★★</span><span class="eq-wk">12주차 · 세션 · redirect</span></div>
+          <div class="eq-q">로그아웃 메소드에서 return "redirect:/" 와 return "home" 의 차이를 동작 원리와 함께 설명하고, 로그아웃에 redirect를 쓰는 이유를 서술하라.</div>
+        </div>
+        <div class="eq-toggle">+</div>
+      </div>
+      <div class="eq-body">
+        <div class="eq-code"><span class="an">@GetMapping</span>(<span class="st">"/member/logout"</span>)
+<span class="kw">public</span> String logout(HttpSession session) {
+    session.invalidate();
+    <span class="kw">return</span> <span class="st">"redirect:/"</span>;  <span class="cm">// ← 이것의 의미?</span>
+}</div>
+        <div class="ans-box">
+          <div class="ans-lbl">정답 및 원리</div>
+          <div class="ans-txt">return "home":
+  → ViewResolver 거쳐 /WEB-INF/views/home.jsp 렌더링
+  → URL은 /member/logout 그대로 유지
+  → 브라우저 새로고침 시 /logout 이 재실행됨 (문제!)
+
+return "redirect:/":
+  → ViewResolver를 거치지 않음
+  → 서버가 브라우저에 HTTP 302 응답 전송
+  → 브라우저가 "/" 로 새 GET 요청 발생
+  → URL이 "/" 로 변경됨
+  → 새로고침해도 "/" 를 요청 → 안전
+
+로그아웃에 redirect 쓰는 이유:
+  브라우저 새로고침 시 로그아웃이 중복 실행되어
+  이미 invalidate된 세션에 다시 접근하는 것을 방지</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq" id="q6">
+      <div class="eq-hd" onclick="tq('q6')">
+        <div class="eq-left">
+          <div class="eq-meta"><span class="eq-badge eb-mid">★★</span><span class="eq-wk">11주차 · @PathVariable 변형</span></div>
+          <div class="eq-q">URL /admin/books/5 접속 시 콘솔 출력값과 JSP에서 ${bookId} 출력값을 쓰고, @RequestParam과의 차이를 설명하라.</div>
+        </div>
+        <div class="eq-toggle">+</div>
+      </div>
+      <div class="eq-body">
+        <div class="eq-code"><span class="an">@GetMapping</span>(<span class="st">"/admin/books/{bookId}"</span>)
+<span class="kw">public</span> String detail(<span class="an">@PathVariable</span> Long bookId, Model model) {
+    System.out.println(<span class="st">"선택된 책 번호: "</span> + bookId);
+    model.addAttribute(<span class="st">"bookId"</span>, bookId);
+    <span class="kw">return</span> <span class="st">"bookDetail"</span>;
+}</div>
+        <div class="ans-box">
+          <div class="ans-lbl">정답 및 원리</div>
+          <div class="ans-txt">콘솔 출력: 선택된 책 번호: 5
+JSP ${bookId}: 5
+
+원리:
+① URL /admin/books/5 에서 {bookId} 자리 "5" 추출
+② @PathVariable Long bookId → String "5" → Long 5L 자동 변환
+③ println("선택된 책 번호: " + 5) → "선택된 책 번호: 5"
+④ model에 bookId=5 → bookDetail.jsp의 ${bookId} = 5
+
+@RequestParam vs @PathVariable:
+@RequestParam → URL: /check?bookId=5  (쿼리스트링 ? 형태)
+@PathVariable → URL: /books/5         (경로 안에 값 포함)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq" id="q7">
+      <div class="eq-hd" onclick="tq('q7')">
+        <div class="eq-left">
+          <div class="eq-meta"><span class="eq-badge eb-mid">★★</span><span class="eq-wk">12주차 · 쿠키·세션 개념</span></div>
+          <div class="eq-q">쿠키와 세션의 차이점을 저장 위치, 보안, 만료 기준, 저장 타입 측면에서 비교하고, 로그인 상태 유지에 세션을 사용하는 이유를 설명하라.</div>
+        </div>
+        <div class="eq-toggle">+</div>
+      </div>
+      <div class="eq-body">
+        <div class="ans-box">
+          <div class="ans-lbl">정답 및 원리</div>
+          <div class="ans-txt">쿠키 (Cookie):
+  저장 위치: 클라이언트(브라우저) — 브라우저에 파일로 저장
+  보안:      취약 (사용자가 직접 확인·수정 가능)
+  만료:      setMaxAge(초) 설정, 0이면 즉시 삭제
+  저장 타입: String만 가능
+  예:        로그인 횟수 카운트 (보안 덜 중요)
+
+세션 (Session):
+  저장 위치: 서버(Tomcat 메모리) — 클라이언트에 노출 안 됨
+  보안:      안전 (서버에서만 접근 가능)
+  만료:      브라우저 종료 or session.invalidate()
+             or setMaxInactiveInterval(초) 초과
+  저장 타입: Object 가능 (MemberVO 객체 그대로 저장)
+  예:        로그인 상태 유지 (보안 중요)
+
+로그인 상태 유지에 세션 사용 이유:
+  MemberVO 객체(ID, 이름, 권한 등)를 Object로 저장 가능
+  서버에 저장되어 쿠키보다 안전
+  세션ID만 브라우저에 쿠키로 전달, 실제 데이터는 서버에</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq" id="q8">
+      <div class="eq-hd" onclick="tq('q8')">
+        <div class="eq-left">
+          <div class="eq-meta"><span class="eq-badge eb-mid">★★</span><span class="eq-wk">10주차 · VO 자동 매핑 함정</span></div>
+          <div class="eq-q">form에서 &lt;input name="userName"&gt; 으로 전송했는데 MemberVO의 name 필드에 값이 들어오지 않는다. 이유와 해결 방법을 설명하라.</div>
+        </div>
+        <div class="eq-toggle">+</div>
+      </div>
+      <div class="eq-body">
+        <div class="eq-code"><span class="cm">&lt;!-- form --&gt;</span>
+&lt;input type="text" <span class="an">name="userName"</span>&gt;  <span class="cm">&lt;!-- userName --&gt;</span>
+
+<span class="cm">// MemberVO</span>
+<span class="kw">public class</span> MemberVO {
+    String name;  <span class="cm">// 필드명: name</span>
+    <span class="kw">public void</span> setName(String name) { <span class="kw">this</span>.name = name; }
+    <span class="cm">// setter: setName → "name" 에 매핑됨</span>
+}</div>
+        <div class="ans-box">
+          <div class="ans-lbl">정답 및 원리</div>
+          <div class="ans-txt">이유:
+  VO 자동 매핑은 form의 input name 값을
+  setXxx() 형태의 setter와 매핑함.
+  input name="userName" → setUserName() 을 찾음
+  MemberVO에는 setName()만 있고 setUserName()이 없음
+  → 매핑 실패 → name 필드에 null이 들어옴
+
+해결 방법 (둘 중 하나):
+① form을 수정: name="userName" → name="name"
+② VO에 setter 추가:
+   public void setUserName(String name) { this.name = name; }
+
+핵심: form의 input name 값 = set + 첫글자대문자(name값)
+      name="age" → setAge() 와 매핑
+      name="userName" → setUserName() 와 매핑</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq" id="q9">
+      <div class="eq-hd" onclick="tq('q9')">
+        <div class="eq-left">
+          <div class="eq-meta"><span class="eq-badge eb-mid">★★</span><span class="eq-wk">13주차 · Docker</span></div>
+          <div class="eq-q">docker-compose.yml에서 DB URL을 localhost 대신 db로 써야 하는 이유와, depends_on: service_healthy 의 역할을 설명하라.</div>
+        </div>
+        <div class="eq-toggle">+</div>
+      </div>
+      <div class="eq-body">
+        <div class="eq-code">environment:
+  SPRING_DATASOURCE_URL: jdbc:mariadb://<span class="an">db</span>:3306/library
+  <span class="cm"># localhost 아닌 "db" ← 이유?</span>
+
+depends_on:
+  db:
+    condition: <span class="an">service_healthy</span>  <span class="cm"># ← 역할?</span></div>
+        <div class="ans-box">
+          <div class="ans-lbl">정답 및 원리</div>
+          <div class="ans-txt">localhost 대신 db 쓰는 이유:
+  각 Docker 컨테이너는 독립된 네트워크 환경을 가짐
+  app 컨테이너 안에서 localhost = app 컨테이너 자신
+  MariaDB는 별도 컨테이너(db)에서 실행 중
+  docker-compose는 서비스명을 내부 DNS로 사용
+  → "db" 라고 쓰면 db 서비스 컨테이너 IP로 자동 해석
+
+depends_on: condition: service_healthy 의 역할:
+  단순 depends_on: db 만 쓰면
+  → DB 프로세스가 시작은 됐지만 아직 연결 수락 전일 수 있음
+  → 앱이 먼저 시작되어 DB 연결 실패 오류 발생 가능
+
+  service_healthy 조건:
+  → DB 컨테이너의 healthcheck 명령(mysql ping 등)이
+    통과될 때까지 기다린 후 앱 컨테이너 시작
+  → 실제로 DB가 연결 가능한 상태임을 보장</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<script>
+function tq(id) {
+  var el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+function sa(el) {
+  document.querySelectorAll('.sb-item').forEach(function(n){ n.classList.remove('active'); });
+  el.classList.add('active');
+}
+var secs = ['w9','w10','w11','w12','w13','compare','roadmap','exam'];
+window.addEventListener('scroll', function() {
+  var y = window.scrollY + 100, cur = 'w9';
+  secs.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && el.offsetTop <= y) cur = id;
+  });
+  document.querySelectorAll('.sb-item').forEach(function(n) {
+    n.classList.remove('active');
+    if (n.getAttribute('href') === '#' + cur) n.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

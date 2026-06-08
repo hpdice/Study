@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>의학통계 완전 정리</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap');
+:root{
+  --bg:#eef2f7;--sur:#fff;--sur2:#f6f9fc;--bdr:#cdd7e3;
+  --tx:#0d1b2a;--sub:#2c4060;--mt:#52697f;
+  --bl:#1250bb;--bl2:#eaf1fd;--bl3:#9bb8f2;
+  --gn:#0a6e35;--gn2:#e6f7ed;--gn3:#5dc287;
+  --or:#8c3d00;--or2:#fff2e5;--or3:#e8913a;
+  --rd:#b01717;--rd2:#fde8e8;--rd3:#e88080;
+  --pu:#5218a8;--pu2:#f0ebff;--pu3:#a87ee8;
+  --tl:#0a6e6e;--tl2:#e5f7f7;--tl3:#4ecece;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:15px;line-height:1.7;padding:18px 16px 50px;}
+
+.hdr{background:linear-gradient(135deg,#0b2850 0%,#1a56a8 100%);border-radius:14px;padding:24px 28px 20px;margin-bottom:16px;box-shadow:0 6px 22px rgba(11,40,80,.22);}
+.hdr h1{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.5px;}
+.hdr p{color:rgba(255,255,255,.78);font-size:13px;margin-top:4px;}
+.htags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+.htag{font-size:12px;font-weight:700;padding:3px 11px;border-radius:20px;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.28);}
+
+.tabs{display:flex;gap:5px;flex-wrap:wrap;background:#fff;padding:7px;border-radius:12px;margin-bottom:14px;border:1.5px solid var(--bdr);box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.tb{padding:9px 18px;border-radius:8px;border:none;background:transparent;color:var(--mt);cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;transition:all .18s;white-space:nowrap;}
+.tb:hover{background:var(--bg);color:var(--sub);}
+.tb.on{background:var(--bl);color:#fff;box-shadow:0 2px 10px rgba(18,80,187,.32);}
+.tc{display:none;}.tc.on{display:block;}
+
+.sec{background:#fff;border:1.5px solid var(--bdr);border-radius:12px;margin-bottom:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.sh{display:flex;align-items:center;gap:10px;padding:13px 20px;border-bottom:1.5px solid var(--bdr);background:var(--sur2);}
+.si{font-size:18px;}.st{font-size:15px;font-weight:900;color:var(--tx);}
+.sb{margin-left:auto;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap;}
+.sbl{background:var(--bl2);color:var(--bl);border:1.5px solid var(--bl3);}
+.sgn{background:var(--gn2);color:var(--gn);border:1.5px solid var(--gn3);}
+.sor{background:var(--or2);color:var(--or);border:1.5px solid var(--or3);}
+.spu{background:var(--pu2);color:var(--pu);border:1.5px solid var(--pu3);}
+.srd{background:var(--rd2);color:var(--rd);border:1.5px solid var(--rd3);}
+.stl{background:var(--tl2);color:var(--tl);border:1.5px solid var(--tl3);}
+
+.tt{width:100%;border-collapse:collapse;}
+.tt thead tr{background:var(--sur2);}
+.tt th{padding:10px 16px;text-align:left;font-size:11px;font-weight:800;color:var(--mt);text-transform:uppercase;letter-spacing:.7px;border-bottom:1.5px solid var(--bdr);}
+.tt td{padding:13px 16px;border-bottom:1px solid #e5ecf4;vertical-align:top;font-size:14px;line-height:1.6;}
+.tt tr:last-child td{border-bottom:none;}.tt tr:hover td{background:#f5f8ff;}
+.tn{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;}
+.tnk{font-size:13px;color:var(--mt);margin-top:2px;font-weight:500;}
+.h0{color:var(--bl);font-size:14px;font-weight:700;}
+.h1{color:var(--gn);font-size:14px;font-weight:700;}
+.tag{display:inline-block;padding:3px 8px;border-radius:5px;font-size:12px;font-weight:700;margin:2px 2px 2px 0;}
+.tg{background:var(--gn2);color:var(--gn);border:1px solid var(--gn3);}
+.tbl{background:var(--bl2);color:var(--bl);border:1px solid var(--bl3);}
+.tor{background:var(--or2);color:var(--or);border:1px solid var(--or3);}
+.tpu{background:var(--pu2);color:var(--pu);border:1px solid var(--pu3);}
+
+.ibox{margin:0 18px 16px;padding:12px 16px;background:var(--bl2);border:1.5px solid var(--bl3);border-left:4px solid var(--bl);border-radius:8px;font-size:14px;line-height:1.7;color:var(--sub);}
+.ibox strong{color:var(--bl);}
+.wbox{margin:0 18px 16px;padding:12px 16px;background:var(--or2);border:1.5px solid var(--or3);border-left:4px solid var(--or);border-radius:8px;font-size:14px;line-height:1.7;color:var(--sub);}
+.wbox strong{color:var(--or);}
+.gbox{margin:0 18px 16px;padding:14px 18px;background:linear-gradient(135deg,var(--gn2),#c8f0da);border:1.5px solid var(--gn3);border-radius:10px;font-size:15px;text-align:center;font-weight:700;line-height:1.9;color:var(--gn);}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;padding:16px;}
+.card{background:var(--sur2);border:1.5px solid var(--bdr);border-radius:10px;padding:15px;transition:all .18s;}
+.card:hover{border-color:var(--bl);box-shadow:0 4px 14px rgba(18,80,187,.1);transform:translateY(-2px);}
+.cn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;margin-bottom:3px;}
+.ck{font-size:15px;font-weight:900;color:var(--tx);margin-bottom:6px;}
+.cd{font-size:13px;color:var(--mt);margin-bottom:10px;line-height:1.6;font-weight:500;}
+.ch0{font-size:13px;color:var(--bl);font-weight:700;line-height:1.5;padding:6px 9px;background:var(--bl2);border-radius:6px;border-left:3px solid var(--bl);margin-bottom:5px;}
+.ch1{font-size:13px;color:var(--gn);font-weight:700;line-height:1.5;padding:6px 9px;background:var(--gn2);border-radius:6px;border-left:3px solid var(--gn);}
+
+.dbox{margin:0 18px 16px;border:1.5px solid var(--bdr);border-radius:10px;overflow:hidden;}
+.dhd{background:var(--sur2);padding:10px 16px;font-size:13px;font-weight:800;color:var(--sub);border-bottom:1px solid var(--bdr);}
+.dbd{padding:14px 16px;font-size:14px;line-height:1.85;color:var(--sub);}
+.dbd strong{color:var(--tx);font-weight:700;}
+.formula{background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:11px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;text-align:center;color:var(--tx);}
+
+.cw{padding:0 18px 16px;}
+.cw h4{font-size:14px;font-weight:800;color:var(--tx);margin-bottom:9px;}
+.ct{width:100%;border-collapse:collapse;border:1.5px solid var(--bdr);border-radius:8px;overflow:hidden;}
+.ct th,.ct td{padding:11px 15px;font-size:14px;font-weight:600;text-align:center;border:1px solid var(--bdr);}
+.ct thead th{background:var(--bl);color:#fff;font-weight:800;border-color:#0d3d99;}
+.ct tbody th{background:var(--sur2);color:var(--sub);font-weight:700;text-align:left;}
+.cpg{background:var(--gn2);color:var(--gn);font-weight:700;}
+.cpo{background:var(--or2);color:var(--or);font-weight:700;}
+
+.pg2{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;}
+@media(max-width:560px){.pg2{grid-template-columns:1fr;}}
+.pc{background:var(--sur2);border:1.5px solid var(--bdr);border-radius:10px;padding:15px;}
+.pc h3{font-size:14px;font-weight:800;margin-bottom:7px;}
+.pc p{font-size:14px;line-height:1.75;color:var(--sub);font-weight:500;}
+.pc p strong{color:var(--tx);font-weight:700;}
+.ew{padding:0 18px 16px;}
+.ew h4{font-size:14px;font-weight:800;color:var(--tx);margin-bottom:9px;}
+.et{width:100%;border-collapse:collapse;border:1.5px solid var(--bdr);overflow:hidden;}
+.et th,.et td{padding:12px 15px;font-size:14px;font-weight:600;text-align:center;border:1px solid var(--bdr);}
+.et th{background:var(--sur2);font-weight:800;color:var(--sub);font-size:13px;}
+.et td:first-child{text-align:left;font-weight:800;background:var(--sur2);padding-left:16px;}
+.ec{background:var(--gn2);color:var(--gn);}
+.e1{background:var(--rd2);color:var(--rd);}
+.e2{background:var(--or2);color:var(--or);}
+.aw{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:0 18px 16px;}
+.ac{padding:13px;border-radius:8px;font-size:14px;line-height:1.75;color:var(--sub);font-weight:500;}
+.ac h4{font-size:14px;font-weight:800;margin-bottom:5px;}
+.alo{background:var(--rd2);border:1.5px solid var(--rd3);}
+.ahi{background:var(--or2);border:1.5px solid var(--or3);}
+.alo h4{color:var(--rd);}.ahi h4{color:var(--or);}
+
+.flow{padding:16px;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;align-items:flex-start;}
+.fb{text-align:center;padding:11px 15px;border-radius:10px;font-size:14px;font-weight:700;min-width:108px;}
+.fa{font-size:22px;color:var(--mt);padding:0 4px;line-height:2.1;}
+.ffk{display:flex;flex-direction:column;gap:9px;}
+.fs{background:var(--pu2);color:var(--pu);border:2px solid var(--pu3);}
+.ft{background:var(--bl2);color:var(--bl);border:2px solid var(--bl3);}
+.fy{background:var(--gn2);color:var(--gn);border:2px solid var(--gn3);}
+.fn{background:var(--or2);color:var(--or);border:2px solid var(--or3);}
+.fl{font-size:12px;color:var(--mt);font-weight:600;text-align:center;margin-top:3px;}
+.sec-label{writing-mode:vertical-lr;text-align:center;font-size:12px;font-weight:900;padding:8px 6px;}
+
+/* 시각화 섹션 공통 */
+.viz-wrap{padding:16px 18px;}
+.viz-title{font-size:14px;font-weight:800;color:var(--tx);margin-bottom:12px;}
+.viz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:4px;}
+.viz-card{background:var(--sur2);border:1.5px solid var(--bdr);border-radius:10px;padding:10px;text-align:center;}
+.viz-card h5{font-size:13px;font-weight:800;margin-top:8px;margin-bottom:3px;}
+.viz-card p{font-size:11px;color:var(--mt);line-height:1.5;}
+.viz-2col{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px 18px;}
+@media(max-width:620px){.viz-2col{grid-template-columns:1fr;}}
+.viz-panel{background:var(--sur2);border:1.5px solid var(--bdr);border-radius:10px;padding:14px;}
+.viz-panel h5{font-size:14px;font-weight:800;color:var(--tx);margin-bottom:10px;}
+.viz-panel p{font-size:13px;color:var(--sub);line-height:1.6;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>📊 의학통계 강의 완전 정리</h1>
+  <p>9~14주차 강의자료 전체 — 검정법 · 분포 · 회귀 · 생존분석</p>
+  <div class="htags">
+    <span class="htag">📋 검정법 전체</span>
+    <span class="htag">📊 통계 기초</span>
+    <span class="htag">📈 회귀·예측</span>
+    <span class="htag">🧬 생존분석</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tb on" onclick="go('t0',this)">📋 검정법 전체</button>
+  <button class="tb"    onclick="go('t1',this)">📊 통계 기초</button>
+  <button class="tb"    onclick="go('t2',this)">📈 회귀·예측</button>
+  <button class="tb"    onclick="go('t3',this)">🧬 생존분석</button>
+</div>
+
+<!-- ══ TAB 0: 검정법 ══ -->
+<div id="t0" class="tc on">
+  <div class="sec">
+    <div class="sh"><span class="si">🔍</span><span class="st">STEP 0 · 정규성 확인 → 검정법 결정 흐름</span><span class="sb spu">항상 먼저</span></div>
+    <div class="flow">
+      <div><div class="fb fs">종속변수<br>수집</div></div>
+      <div class="fa">→</div>
+      <div><div class="fb ft">Shapiro-Wilk<br>정규성 검정</div><div class="fl">H₀: 정규분포를 따른다</div></div>
+      <div class="fa">→</div>
+      <div class="ffk">
+        <div><div class="fb fy">p ≥ 0.05 ✓</div><div class="fl">→ 모수적 검정</div></div>
+        <div><div class="fb fn">p &lt; 0.05 ✗</div><div class="fl">→ 비모수적 검정</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sh"><span class="si">📋</span><span class="st">전체 검정법 요약표</span><span class="sb sbl">모든 검정 한눈에</span></div>
+    <table class="tt">
+      <thead><tr><th style="width:4%">구분</th><th style="width:19%">검정법</th><th style="width:16%">적용 조건</th><th style="width:30%">H₀ 귀무가설</th><th style="width:31%">H₁ 연구가설</th></tr></thead>
+      <tbody>
+        <tr style="background:#f0fdf5">
+          <td rowspan="4" class="sec-label" style="color:var(--gn);background:var(--gn2);border-right:2px solid var(--gn3)">모수적</td>
+          <td><div class="tn" style="color:var(--gn)">z-test</div><div class="tnk">단일표본 z검정</div></td>
+          <td><span class="tag tg">1집단</span><span class="tag tbl">σ 알려짐</span></td>
+          <td class="h0">표본평균 = 모집단평균 (μ=μ₀)</td>
+          <td class="h1">표본평균 ≠ 모집단평균 (μ≠μ₀)</td>
+        </tr>
+        <tr style="background:#f0fdf5">
+          <td><div class="tn" style="color:var(--gn)">Independent t-test</div><div class="tnk">독립표본 t검정</div></td>
+          <td><span class="tag tg">2집단</span><span class="tag tbl">독립</span></td>
+          <td class="h0">두 집단 평균 차이 없다 (μ₁=μ₂)</td>
+          <td class="h1">두 집단 평균이 다르다 (μ₁≠μ₂)</td>
+        </tr>
+        <tr style="background:#f0fdf5">
+          <td><div class="tn" style="color:var(--gn)">Paired t-test</div><div class="tnk">대응표본 t검정</div></td>
+          <td><span class="tag tg">2집단</span><span class="tag tor">대응·전후</span></td>
+          <td class="h0">평균 차이 = 0 (μd=0)</td>
+          <td class="h1">평균 차이 ≠ 0 (μd≠0)</td>
+        </tr>
+        <tr style="background:#f0fdf5">
+          <td><div class="tn" style="color:var(--gn)">One-way ANOVA</div><div class="tnk">일원 분산분석</div></td>
+          <td><span class="tag tg">3집단+</span><span class="tag tbl">독립</span></td>
+          <td class="h0">모든 집단 평균 같다 (μ₁=…=μk)</td>
+          <td class="h1">하나 이상 집단 평균이 다르다</td>
+        </tr>
+        <tr style="background:#fff8f0">
+          <td rowspan="3" class="sec-label" style="color:var(--or);background:var(--or2);border-right:2px solid var(--or3)">비모수</td>
+          <td><div class="tn" style="color:var(--or)">Wilcoxon signed rank</div><div class="tnk">Paired t 대체</div></td>
+          <td><span class="tag tor">2집단</span><span class="tag tor">대응</span></td>
+          <td class="h0">대응 두 집단 중앙값 차이 = 0</td>
+          <td class="h1">중앙값 차이 ≠ 0</td>
+        </tr>
+        <tr style="background:#fff8f0">
+          <td><div class="tn" style="color:var(--or)">Wilcoxon rank sum</div><div class="tnk">Indep. t 대체</div></td>
+          <td><span class="tag tor">2집단</span><span class="tag tbl">독립</span></td>
+          <td class="h0">두 독립 집단 중앙값 같다</td>
+          <td class="h1">두 집단 중앙값이 다르다</td>
+        </tr>
+        <tr style="background:#fff8f0">
+          <td><div class="tn" style="color:var(--or)">Kruskal-Wallis</div><div class="tnk">ANOVA 대체</div></td>
+          <td><span class="tag tor">3집단+</span><span class="tag tbl">독립</span></td>
+          <td class="h0">모든 집단 중앙값 같다</td>
+          <td class="h1">하나 이상 집단 중앙값 다르다</td>
+        </tr>
+        <tr style="background:#eef4ff">
+          <td rowspan="3" class="sec-label" style="color:var(--bl);background:var(--bl2);border-right:2px solid var(--bl3)">범주형</td>
+          <td><div class="tn" style="color:var(--bl)">χ² 단일표본</div><div class="tnk">단일표본 카이제곱</div></td>
+          <td><span class="tag tbl">1집단</span><span class="tag tbl">빈도</span></td>
+          <td class="h0">관찰빈도 = 기대빈도 (균등)</td>
+          <td class="h1">특정 범주 빈도가 기대와 다르다</td>
+        </tr>
+        <tr style="background:#eef4ff">
+          <td><div class="tn" style="color:var(--bl)">χ² 연관성</div><div class="tnk">연관성 카이제곱</div></td>
+          <td><span class="tag tbl">2변수</span><span class="tag tbl">독립</span></td>
+          <td class="h0">두 범주형 변수는 서로 독립</td>
+          <td class="h1">두 변수는 서로 연관이 있다</td>
+        </tr>
+        <tr style="background:#eef4ff">
+          <td><div class="tn" style="color:var(--bl)">McNemar's test</div><div class="tnk">맥네마 검정</div></td>
+          <td><span class="tag tbl">2변수</span><span class="tag tor">대응</span></td>
+          <td class="h0">전·후 반응 비율 차이 없다</td>
+          <td class="h1">전·후 반응 비율 차이 있다</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="ibox" style="margin-top:4px;">💡 <strong>모수↔비모수 대응:</strong> Paired t ↔ Wilcoxon signed rank &nbsp;|&nbsp; Indep. t ↔ Wilcoxon rank sum &nbsp;|&nbsp; ANOVA ↔ Kruskal-Wallis<br>💡 <strong>범주형 주의:</strong> 독립 표본 → 카이제곱 &nbsp;|&nbsp; 대응(전·후) → 맥네마 &nbsp;|&nbsp; 두 연속형 변수 상관 → Pearson's correlation</div>
+  </div>
+  <div class="sec">
+    <div class="sh"><span class="si">📐</span><span class="st">p값 · 유의수준 · 오류 핵심 요약</span><span class="sb srd">결과 해석 기준</span></div>
+    <div class="pg2">
+      <div class="pc" style="border-left:4px solid var(--bl)">
+        <h3 style="color:var(--bl)">p값의 정의</h3>
+        <p>귀무가설이 참일 때 지금 결과가 <strong>우연으로 나올 확률</strong><br>→ 작을수록 진짜 차이가 있다는 근거 강해짐</p>
+      </div>
+      <div class="pc" style="border-left:4px solid var(--or)">
+        <h3 style="color:var(--or)">유의수준 α = 0.05</h3>
+        <p>허용 가능한 <strong>1종 오류 최대 한계</strong><br>→ 1종↔2종 오류 사이의 <strong>관행적 균형점</strong></p>
+      </div>
+    </div>
+    <div class="ew">
+      <table class="et">
+        <thead><tr><th>의사결정</th><th>실제 H₀ 참 (차이 없음)</th><th>실제 H₀ 거짓 (차이 있음)</th></tr></thead>
+        <tbody>
+          <tr><td>p &lt; 0.05 → H₀ 기각</td><td class="e1">❌ 1종 오류 (α)<br><small>없는데 "있다"고 잘못 결론</small></td><td class="ec">✅ 올바른 결정<br><small>검정력 = 1−β</small></td></tr>
+          <tr><td>p ≥ 0.05 → H₀ 채택</td><td class="ec">✅ 올바른 결정</td><td class="e2">❌ 2종 오류 (β)<br><small>있는데 "없다"고 놓침</small></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="gbox">p &lt; 0.05 → 우연일 확률 5% 미만 → 귀무가설 기각 ✅ → 연구가설 채택<br>p ≥ 0.05 → 우연으로도 설명 가능 → 귀무가설 기각 실패</div>
+  </div>
+</div>
+
+<!-- ══ TAB 1: 통계 기초 ══ -->
+<div id="t1" class="tc">
+
+  <!-- 주요 통계 분포 시각화 -->
+  <div class="sec">
+    <div class="sh"><span class="si">🎲</span><span class="st">주요 통계 분포 — 형태와 특징</span><span class="sb sbl">12주차 2차시</span></div>
+    <div class="viz-wrap">
+      <div class="viz-title">📐 정규분포에서 파생된 분포들 (모수적 검정의 토대)</div>
+      <div class="viz-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));">
+        <!-- 정규분포 -->
+        <div class="viz-card">
+          <svg viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:80px;">
+            <rect width="180" height="80" fill="#eaf1fd" rx="6"/>
+            <path d="M10,70 C30,70 45,68 65,50 C80,36 85,12 90,8 C95,12 100,36 115,50 C135,68 150,70 170,70" fill="none" stroke="#1250bb" stroke-width="2.5"/>
+            <path d="M65,70 C80,56 85,22 90,8 C95,22 100,56 115,70 Z" fill="rgba(18,80,187,0.12)"/>
+            <line x1="90" y1="8" x2="90" y2="70" stroke="#1250bb" stroke-width="1.2" stroke-dasharray="3,2"/>
+            <text x="90" y="78" fill="#1250bb" font-size="9" text-anchor="middle" font-family="sans-serif" font-weight="bold">μ (평균=중앙값=최빈값)</text>
+          </svg>
+          <h5 style="color:var(--bl)">정규분포 N(μ,σ)</h5>
+          <p>좌우 대칭 종 모양<br>모수 검정의 기본 가정<br>z, t, F, χ² 분포의 토대</p>
+        </div>
+        <!-- t분포 -->
+        <div class="viz-card">
+          <svg viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:80px;">
+            <rect width="180" height="80" fill="#eaf1fd" rx="6"/>
+            <path d="M10,70 C25,70 38,66 55,52 C68,40 76,18 90,10 C104,18 112,40 125,52 C142,66 155,70 170,70" fill="none" stroke="#5218a8" stroke-width="2" stroke-dasharray="5,3"/>
+            <path d="M10,70 C30,70 45,68 65,50 C80,36 85,12 90,8 C95,12 100,36 115,50 C135,68 150,70 170,70" fill="none" stroke="#1250bb" stroke-width="2"/>
+            <text x="140" y="25" fill="#5218a8" font-size="9" font-family="sans-serif">t(df작음)</text>
+            <text x="100" y="14" fill="#1250bb" font-size="9" font-family="sans-serif">정규</text>
+          </svg>
+          <h5 style="color:var(--pu)">t분포</h5>
+          <p>정규분포보다 꼬리 두꺼움<br>자유도 클수록 정규분포에 근접<br>σ 모를 때 사용</p>
+        </div>
+        <!-- 카이제곱 -->
+        <div class="viz-card">
+          <svg viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:80px;">
+            <rect width="180" height="80" fill="#fff2e5" rx="6"/>
+            <path d="M15,70 C20,70 25,60 35,35 C42,18 50,10 60,10 C72,10 80,22 90,38 C105,58 125,68 170,70" fill="none" stroke="#8c3d00" stroke-width="2.5"/>
+            <path d="M15,70 C20,70 25,60 35,35 C42,18 50,10 60,10 C72,10 80,22 90,38 C105,58 125,68 170,70 L170,70 L15,70 Z" fill="rgba(140,61,0,0.1)"/>
+            <text x="60" y="8" fill="#8c3d00" font-size="9" font-family="sans-serif" font-weight="bold">우측 꼬리 긴 분포</text>
+          </svg>
+          <h5 style="color:var(--or)">카이제곱(χ²)분포</h5>
+          <p>표준정규변수의 제곱합<br>자유도 k에 따라 형태 변화<br>범주형 검정에 사용</p>
+        </div>
+      </div>
+
+      <div class="viz-title" style="margin-top:16px;">🎲 실생활 확률 분포들</div>
+      <div class="viz-grid">
+        <!-- 이항분포 -->
+        <div class="viz-card">
+          <svg viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:80px;">
+            <rect width="180" height="80" fill="#e6f7ed" rx="6"/>
+            <g fill="#0a6e35" opacity="0.8">
+              <rect x="20" y="65" width="14" height="5" rx="1"/>
+              <rect x="40" y="55" width="14" height="15" rx="1"/>
+              <rect x="60" y="35" width="14" height="35" rx="1"/>
+              <rect x="80" y="20" width="14" height="50" rx="1"/>
+              <rect x="100" y="30" width="14" height="40" rx="1"/>
+              <rect x="120" y="50" width="14" height="20" rx="1"/>
+              <rect x="140" y="62" width="14" height="8" rx="1"/>
+            </g>
+            <text x="90" y="12" fill="#0a6e35" font-size="9" text-anchor="middle" font-family="sans-serif" font-weight="bold">n=10, p=0.5 (동전 앞면)</text>
+          </svg>
+          <h5 style="color:var(--gn)">이항분포 Binomial</h5>
+          <p>n번 시행 중 성공 횟수<br>TRUE/FALSE 결과<br>예) 폐암 환자 수 (n=100, p=0.15)</p>
+        </div>
+        <!-- 포아송 -->
+        <div class="viz-card">
+          <svg viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:80px;">
+            <rect width="180" height="80" fill="#eaf1fd" rx="6"/>
+            <g fill="#1250bb" opacity="0.8">
+              <rect x="15" y="30" width="14" height="40" rx="1"/>
+              <rect x="35" y="18" width="14" height="52" rx="1"/>
+              <rect x="55" y="28" width="14" height="42" rx="1"/>
+              <rect x="75" y="44" width="14" height="26" rx="1"/>
+              <rect x="95" y="54" width="14" height="16" rx="1"/>
+              <rect x="115" y="62" width="14" height="8" rx="1"/>
+              <rect x="135" y="65" width="14" height="5" rx="1"/>
+            </g>
+            <text x="90" y="12" fill="#1250bb" font-size="9" text-anchor="middle" font-family="sans-serif" font-weight="bold">λ=2 (평균 2회 발생)</text>
+          </svg>
+          <h5 style="color:var(--bl)">포아송분포 Poisson</h5>
+          <p>단위 시간 내 사건 횟수<br>독립적·희소 사건<br>예) 일일 뇌졸중 응급 방문 수</p>
+        </div>
+        <!-- 멱함수 -->
+        <div class="viz-card">
+          <svg viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:80px;">
+            <rect width="180" height="80" fill="#f0ebff" rx="6"/>
+            <path d="M15,10 C20,18 28,32 40,48 C55,62 75,68 110,70 C135,71 155,71 170,71" fill="none" stroke="#5218a8" stroke-width="2.5"/>
+            <path d="M15,10 C20,18 28,32 40,48 C55,62 75,68 110,70 C135,71 155,71 170,71 L170,71 L15,71 Z" fill="rgba(82,24,168,0.1)"/>
+            <text x="30" y="8" fill="#5218a8" font-size="9" font-family="sans-serif" font-weight="bold">소수가 대부분 차지</text>
+          </svg>
+          <h5 style="color:var(--pu)">멱함수분포 Power-law</h5>
+          <p>부익부 빈익빈 현상<br>로그-로그 그래프에서 직선<br>예) 소득분포 — 상위 소수 집중</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 자유도 섹션 -->
+  <div class="sec">
+    <div class="sh"><span class="si">🎯</span><span class="st">자유도 (Degrees of Freedom, df) — 검정별 계산법</span><span class="sb spu">핵심 개념</span></div>
+
+    <div class="viz-wrap">
+      <div class="viz-title">💡 자유도란? — "데이터에서 자유롭게 변할 수 있는 값의 수"</div>
+
+      <!-- 자유도 직관 설명 -->
+      <div style="background:var(--pu2);border:1.5px solid var(--pu3);border-left:4px solid var(--pu);border-radius:8px;padding:14px 16px;margin-bottom:16px;font-size:14px;line-height:1.8;color:var(--sub);">
+        <strong style="color:var(--pu)">직관적 이해:</strong> n개의 데이터로 평균을 구하면 → 마지막 1개 값은 자동으로 결정됨 (나머지를 이미 알면 마지막은 "자유롭지 않음")<br>
+        → n개 데이터, 1개 추정 파라미터(평균) → <strong style="color:var(--pu)">자유도 = n − 1</strong><br>
+        자유도가 클수록 → 분포가 정규분포에 가까워짐 → 임계값이 작아짐 → 귀무가설 기각이 쉬워짐
+      </div>
+
+      <!-- 검정별 자유도 — 카드 3개 단순 세로 나열 -->
+
+      <!-- ① t검정 -->
+      <div class="viz-card" style="padding:16px;margin-bottom:12px;">
+        <h5 style="color:var(--gn);font-size:14px;margin-bottom:12px;">① t검정 자유도</h5>
+        <svg viewBox="0 0 500 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:90px;margin-bottom:12px;">
+          <rect width="500" height="90" fill="#e6f7ed" rx="6"/>
+          <path d="M20,80 C50,80 80,72 120,50 C148,34 155,12 200,8 C245,12 252,34 280,50 C320,72 350,80 380,80" fill="none" stroke="#e8913a" stroke-width="2" stroke-dasharray="5,3"/>
+          <path d="M20,80 C50,80 78,74 116,55 C144,42 155,18 200,10 C245,18 256,42 284,55 C322,74 350,80 380,80" fill="none" stroke="#5218a8" stroke-width="2"/>
+          <path d="M20,80 C52,80 82,76 122,60 C148,48 156,22 200,12 C244,22 252,48 278,60 C318,76 348,80 380,80" fill="none" stroke="#1250bb" stroke-width="2.5" stroke-dasharray="3,2"/>
+          <rect x="390" y="8" width="100" height="62" fill="white" rx="4" opacity="0.9" stroke="#cdd7e3"/>
+          <line x1="395" y1="22" x2="408" y2="22" stroke="#1250bb" stroke-width="2" stroke-dasharray="3,2"/>
+          <text x="412" y="26" fill="#1250bb" font-size="10" font-family="sans-serif" font-weight="bold">정규분포</text>
+          <line x1="395" y1="38" x2="408" y2="38" stroke="#5218a8" stroke-width="2"/>
+          <text x="412" y="42" fill="#5218a8" font-size="10" font-family="sans-serif" font-weight="bold">df = 10</text>
+          <line x1="395" y1="54" x2="408" y2="54" stroke="#e8913a" stroke-width="2" stroke-dasharray="5,3"/>
+          <text x="412" y="58" fill="#8c3d00" font-size="10" font-family="sans-serif" font-weight="bold">df = 3</text>
+          <text x="200" y="78" fill="#0a6e35" font-size="10" text-anchor="middle" font-family="sans-serif">df 클수록 → 꼬리 얇아짐 → 정규분포에 가까워짐</text>
+        </svg>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:14px;">
+          <div style="background:var(--gn2);border-radius:6px;padding:10px 12px;border-left:3px solid var(--gn);">
+            <strong style="color:var(--gn)">단일표본 t / 대응표본 t</strong><br>
+            df = n − 1
+          </div>
+          <div style="background:var(--bl2);border-radius:6px;padding:10px 12px;border-left:3px solid var(--bl);">
+            <strong style="color:var(--bl)">독립표본 t검정</strong><br>
+            df = n₁ + n₂ − 2
+          </div>
+        </div>
+      </div>
+
+      <!-- ② 카이제곱 -->
+      <div class="viz-card" style="padding:16px;margin-bottom:12px;">
+        <h5 style="color:var(--or);font-size:14px;margin-bottom:12px;">② 카이제곱 자유도</h5>
+        <svg viewBox="0 0 500 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:90px;margin-bottom:12px;">
+          <rect width="500" height="90" fill="#fff2e5" rx="6"/>
+          <path d="M20,80 C24,80 26,55 36,28 C42,14 50,8 60,8 C70,8 75,20 84,42 C96,65 116,78 380,80" fill="none" stroke="#b01717" stroke-width="2"/>
+          <path d="M20,80 C24,78 32,62 50,40 C64,22 76,12 90,10 C104,10 116,22 130,40 C148,62 175,76 380,80" fill="none" stroke="#8c3d00" stroke-width="2" stroke-dasharray="5,3"/>
+          <path d="M20,80 C26,78 38,66 62,47 C78,34 92,18 108,14 C124,14 138,28 155,46 C178,66 210,78 380,80" fill="none" stroke="#e8913a" stroke-width="2" stroke-dasharray="3,2"/>
+          <rect x="390" y="8" width="100" height="62" fill="white" rx="4" opacity="0.9" stroke="#cdd7e3"/>
+          <line x1="395" y1="22" x2="408" y2="22" stroke="#b01717" stroke-width="2"/>
+          <text x="412" y="26" fill="#b01717" font-size="10" font-family="sans-serif" font-weight="bold">df = 1</text>
+          <line x1="395" y1="38" x2="408" y2="38" stroke="#8c3d00" stroke-width="2" stroke-dasharray="5,3"/>
+          <text x="412" y="42" fill="#8c3d00" font-size="10" font-family="sans-serif" font-weight="bold">df = 3</text>
+          <line x1="395" y1="54" x2="408" y2="54" stroke="#e8913a" stroke-width="2" stroke-dasharray="3,2"/>
+          <text x="412" y="58" fill="#8c3d00" font-size="10" font-family="sans-serif" font-weight="bold">df = 5</text>
+          <text x="200" y="78" fill="#8c3d00" font-size="10" text-anchor="middle" font-family="sans-serif">df 클수록 → 봉우리가 오른쪽으로 이동, 형태 정규분포에 근접</text>
+        </svg>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:14px;">
+          <div style="background:var(--or2);border-radius:6px;padding:10px 12px;border-left:3px solid var(--or);">
+            <strong style="color:var(--or)">단일표본 카이제곱</strong><br>
+            df = 범주 수 − 1
+          </div>
+          <div style="background:var(--or2);border-radius:6px;padding:10px 12px;border-left:3px solid var(--or);">
+            <strong style="color:var(--or)">연관성 카이제곱 (교차표)</strong><br>
+            df = (행 − 1) × (열 − 1)
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ ANOVA -->
+      <div class="viz-card" style="padding:16px;margin-bottom:14px;">
+        <h5 style="color:var(--bl);font-size:14px;margin-bottom:12px;">③ ANOVA 자유도 — F(집단 간 df, 집단 내 df)</h5>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:12px;font-size:14px;">
+          <thead>
+            <tr style="background:var(--bl);color:#fff;">
+              <th style="padding:10px 14px;font-weight:700;text-align:left;">변동 종류</th>
+              <th style="padding:10px 14px;font-weight:700;text-align:center;">df 공식</th>
+              <th style="padding:10px 14px;font-weight:700;text-align:left;">의미</th>
+              <th style="padding:10px 14px;font-weight:700;text-align:center;">예시 (k=3, 각 n=10)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:var(--gn2);">
+              <td style="padding:10px 14px;font-weight:700;color:var(--gn);">집단 간 (Between)</td>
+              <td style="padding:10px 14px;font-weight:900;color:var(--gn);text-align:center;font-size:16px;">k − 1</td>
+              <td style="padding:10px 14px;color:var(--sub);">집단 수 k</td>
+              <td style="padding:10px 14px;font-weight:700;color:var(--gn);text-align:center;">3 − 1 = <strong>2</strong></td>
+            </tr>
+            <tr style="background:var(--bl2);">
+              <td style="padding:10px 14px;font-weight:700;color:var(--bl);">집단 내 (Within)</td>
+              <td style="padding:10px 14px;font-weight:900;color:var(--bl);text-align:center;font-size:16px;">N − k</td>
+              <td style="padding:10px 14px;color:var(--sub);">전체 N, 집단 수 k</td>
+              <td style="padding:10px 14px;font-weight:700;color:var(--bl);text-align:center;">30 − 3 = <strong>27</strong></td>
+            </tr>
+            <tr style="background:var(--sur2);border-top:2px solid var(--bdr);">
+              <td style="padding:10px 14px;font-weight:700;">전체 (Total)</td>
+              <td style="padding:10px 14px;font-weight:900;text-align:center;font-size:16px;">N − 1</td>
+              <td style="padding:10px 14px;color:var(--sub);">집단간 + 집단내</td>
+              <td style="padding:10px 14px;font-weight:700;text-align:center;">30 − 1 = <strong>29</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;text-align:center;color:var(--tx);">
+          F(2, 27) = 집단 간 분산 / 집단 내 분산 &nbsp;→&nbsp; 임계값 3.36 @ α=0.05
+        </div>
+      </div>
+
+      <!-- 자유도와 임계값 관계 -->
+      <div class="viz-title">📌 자유도 크기 → 임계값 변화 → 귀무가설 기각 난이도</div>
+      <svg viewBox="0 0 600 70" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:70px;margin-bottom:8px;">
+        <rect width="600" height="70" fill="#f6f9fc" rx="8"/>
+        <!-- 화살표 바 -->
+        <defs>
+          <linearGradient id="dfGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#b01717;stop-opacity:1"/>
+            <stop offset="50%" style="stop-color:#e8913a;stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:#0a6e35;stop-opacity:1"/>
+          </linearGradient>
+        </defs>
+        <rect x="20" y="28" width="560" height="14" rx="7" fill="url(#dfGrad)" opacity="0.8"/>
+        <polygon points="580,35 570,28 570,42" fill="#0a6e35"/>
+        <!-- 라벨 -->
+        <text x="20"  y="18" fill="#b01717" font-size="12" font-family="sans-serif" font-weight="bold">df 작음 (n 적음)</text>
+        <text x="480" y="18" fill="#0a6e35" font-size="12" font-family="sans-serif" font-weight="bold">df 큼 (n 많음)</text>
+        <text x="20"  y="57" fill="#b01717" font-size="11" font-family="sans-serif">임계값 큼 → 기각 어려움 → 검정력 ↓</text>
+        <text x="370" y="57" fill="#0a6e35" font-size="11" font-family="sans-serif">임계값 작음 → 기각 쉬움 → 검정력 ↑</text>
+      </svg>
+      <div style="background:var(--gn2);border:1.5px solid var(--gn3);border-radius:8px;padding:12px 16px;font-size:14px;line-height:1.7;color:var(--sub);">
+        💡 <strong style="color:var(--gn)">핵심 요약:</strong> 자유도 = 표본크기(n)에 의존 → 표본이 클수록 df 증가 → t분포·χ²분포가 정규분포에 가까워짐 → 더 작은 차이도 통계적으로 유의하게 탐지 가능
+      </div>
+    </div>
+  </div>
+
+  <!-- ROC / 혼동행렬 시각화 (10주차 1차시 수정본 반영) -->
+  <div class="sec">
+    <div class="sh"><span class="si">📉</span><span class="st">모델 성능 평가: 혼동행렬 · 성능지표 · ROC · AUC</span><span class="sb stl">10주차 1차시 · 12주차 1차시</span></div>
+
+    <!-- 혼동행렬 구조 -->
+    <div class="viz-wrap">
+      <div class="viz-title">① 혼동행렬 (Confusion Matrix) — 구조와 각 셀의 의미</div>
+      <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:200px;margin-bottom:10px;">
+        <rect width="580" height="200" fill="#f6f9fc" rx="8"/>
+        <!-- 예측값 헤더 -->
+        <rect x="170" y="10" width="390" height="28" fill="#5218a8" rx="4"/>
+        <text x="365" y="28" fill="#fff" font-size="13" text-anchor="middle" font-family="sans-serif" font-weight="bold">예측값 (Predicted)</text>
+        <rect x="170" y="42" width="190" height="26" fill="#7c4dcc" rx="3"/>
+        <text x="265" y="58" fill="#fff" font-size="12" text-anchor="middle" font-family="sans-serif" font-weight="bold">양성 (Positive)</text>
+        <rect x="365" y="42" width="190" height="26" fill="#7c4dcc" rx="3"/>
+        <text x="460" y="58" fill="#fff" font-size="12" text-anchor="middle" font-family="sans-serif" font-weight="bold">음성 (Negative)</text>
+        <!-- 실제값 헤더 -->
+        <rect x="10" y="72" width="155" height="57" fill="#0a6e6e" rx="4"/>
+        <text x="87" y="97" fill="#fff" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">실제값</text>
+        <text x="87" y="113" fill="#fff" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">양성 (Yes)</text>
+        <rect x="10" y="133" width="155" height="57" fill="#0a6e6e" rx="4"/>
+        <text x="87" y="158" fill="#fff" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">실제값</text>
+        <text x="87" y="174" fill="#fff" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">음성 (No)</text>
+        <!-- TP -->
+        <rect x="170" y="72" width="190" height="57" fill="#e6f7ed" rx="4" stroke="#5dc287" stroke-width="2"/>
+        <text x="265" y="96" fill="#0a6e35" font-size="18" text-anchor="middle" font-family="sans-serif" font-weight="900">TP</text>
+        <text x="265" y="115" fill="#0a6e35" font-size="11" text-anchor="middle" font-family="sans-serif">참 양성 ✅ 질환 있음→있음 예측</text>
+        <!-- FN -->
+        <rect x="365" y="72" width="190" height="57" fill="#fde8e8" rx="4" stroke="#e88080" stroke-width="2"/>
+        <text x="460" y="96" fill="#b01717" font-size="18" text-anchor="middle" font-family="sans-serif" font-weight="900">FN</text>
+        <text x="460" y="115" fill="#b01717" font-size="11" text-anchor="middle" font-family="sans-serif">거짓 음성 ❌ 있는데→없다 예측</text>
+        <!-- FP -->
+        <rect x="170" y="133" width="190" height="57" fill="#fff2e5" rx="4" stroke="#e8913a" stroke-width="2"/>
+        <text x="265" y="157" fill="#8c3d00" font-size="18" text-anchor="middle" font-family="sans-serif" font-weight="900">FP</text>
+        <text x="265" y="176" fill="#8c3d00" font-size="11" text-anchor="middle" font-family="sans-serif">거짓 양성 ❌ 없는데→있다 예측</text>
+        <!-- TN -->
+        <rect x="365" y="133" width="190" height="57" fill="#e6f7ed" rx="4" stroke="#5dc287" stroke-width="2"/>
+        <text x="460" y="157" fill="#0a6e35" font-size="18" text-anchor="middle" font-family="sans-serif" font-weight="900">TN</text>
+        <text x="460" y="176" fill="#0a6e35" font-size="11" text-anchor="middle" font-family="sans-serif">참 음성 ✅ 없음→없다 예측</text>
+      </svg>
+    </div>
+
+    <!-- 성능지표 5개 공식 테이블 -->
+    <div class="viz-wrap" style="padding-top:0;">
+      <div class="viz-title">② 5가지 성능지표 — 공식과 의미</div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:12px;">
+        <thead>
+          <tr style="background:var(--bl);color:#fff;">
+            <th style="padding:10px 14px;font-weight:700;text-align:left;">지표</th>
+            <th style="padding:10px 14px;font-weight:700;text-align:center;">공식</th>
+            <th style="padding:10px 14px;font-weight:700;text-align:left;">의미 / 관심사</th>
+            <th style="padding:10px 14px;font-weight:700;text-align:center;">Model 1 예시</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:var(--sur2);">
+            <td style="padding:10px 14px;font-weight:700;color:var(--bl);">정확도 Accuracy</td>
+            <td style="padding:10px 14px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;">(TP+TN) / (TP+FN+FP+TN)</td>
+            <td style="padding:10px 14px;color:var(--sub);">전체 예측 중 맞은 비율</td>
+            <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--bl);">(142+110)/303 = 0.83</td>
+          </tr>
+          <tr style="background:var(--gn2);">
+            <td style="padding:10px 14px;font-weight:700;color:var(--gn);">민감도 Sensitivity<br><small style="font-weight:400">(= Recall = TPR)</small></td>
+            <td style="padding:10px 14px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;">TP / (TP + FN)</td>
+            <td style="padding:10px 14px;color:var(--sub);">실제 양성 중 올바르게 잡아낸 비율<br><strong style="color:var(--gn)">관심: 실제 질환 있는 환자</strong></td>
+            <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--gn);">142/(142+22) = 0.87</td>
+          </tr>
+          <tr style="background:var(--tl2);">
+            <td style="padding:10px 14px;font-weight:700;color:var(--tl);">특이도 Specificity<br><small style="font-weight:400">(= TNR)</small></td>
+            <td style="padding:10px 14px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;">TN / (TN + FP)</td>
+            <td style="padding:10px 14px;color:var(--sub);">실제 음성 중 올바르게 잡아낸 비율<br><strong style="color:var(--tl)">관심: 실제 질환 없는 환자</strong></td>
+            <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--tl);">110/(110+29) = 0.79</td>
+          </tr>
+          <tr style="background:var(--pu2);">
+            <td style="padding:10px 14px;font-weight:700;color:var(--pu);">정밀도 Precision<br><small style="font-weight:400">(= PPV)</small></td>
+            <td style="padding:10px 14px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;">TP / (TP + FP)</td>
+            <td style="padding:10px 14px;color:var(--sub);">양성 예측 중 실제 양성인 비율<br><strong style="color:var(--pu)">관심: 예측의 신뢰도(품질)</strong></td>
+            <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--pu);">142/(142+29) = 0.83</td>
+          </tr>
+          <tr style="background:var(--or2);">
+            <td style="padding:10px 14px;font-weight:700;color:var(--or);">F1 score</td>
+            <td style="padding:10px 14px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;">2 × (Precision×Recall) / (Precision+Recall)</td>
+            <td style="padding:10px 14px;color:var(--sub);">정밀도와 민감도의 <strong>조화평균</strong><br>둘 다 골고루 높을 때 커짐</td>
+            <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--or);">2×(0.83×0.87)/(0.83+0.87) = 0.85</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- FN vs FP 중요성 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div style="background:var(--rd2);border:1.5px solid var(--rd3);border-left:4px solid var(--rd);border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.7;color:var(--sub);">
+          <strong style="color:var(--rd);">FN 최소화가 중요한 경우</strong><br>
+          → 민감도(Recall) ↑ 중시<br>
+          예) 결핵·HIV 검사, 갑작스런 사망 질환<br>
+          <small>FN: "있는데 없다"고 해서 치료 기회 놓침</small>
+        </div>
+        <div style="background:var(--or2);border:1.5px solid var(--or3);border-left:4px solid var(--or);border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.7;color:var(--sub);">
+          <strong style="color:var(--or);">FP 최소화가 중요한 경우</strong><br>
+          → 정밀도(Precision) ↑ 중시<br>
+          예) 예후 좋은 암, AIDS, 선천성 기형 검사<br>
+          <small>FP: "없는데 있다"고 해서 불필요한 치료·심리적 고통</small>
+        </div>
+      </div>
+      <div class="ibox">💡 Precision만 높고 Recall이 낮으면 → FN 많음 &nbsp;|&nbsp; Recall만 높고 Precision이 낮으면 → FP 많음 &nbsp;|&nbsp; <strong>F1 score</strong>는 둘 다 균형 있게 높은 모델을 선호</div>
+    </div>
+
+    <!-- ROC 곡선 -->
+    <div class="viz-2col" style="padding-top:0;">
+      <div class="viz-panel">
+        <h5>③ ROC 곡선과 AUC (12주차 1차시)</h5>
+        <svg viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:260px;height:auto;">
+          <rect width="220" height="200" fill="#f6f9fc" rx="8"/>
+          <line x1="30" y1="170" x2="200" y2="170" stroke="#cdd7e3" stroke-width="1.5"/>
+          <line x1="30" y1="10"  x2="30"  y2="170" stroke="#cdd7e3" stroke-width="1.5"/>
+          <line x1="30" y1="170" x2="200" y2="10" stroke="#cdd7e3" stroke-width="1.5" stroke-dasharray="5,4"/>
+          <text x="140" y="105" fill="#aab8c8" font-size="10" font-family="sans-serif">랜덤=0.5</text>
+          <path d="M30,170 C50,120 60,40 90,20 C120,8 160,10 200,10" fill="none" stroke="#1250bb" stroke-width="2.5"/>
+          <path d="M30,170 C50,120 60,40 90,20 C120,8 160,10 200,10 L200,170 Z" fill="rgba(18,80,187,0.08)"/>
+          <path d="M30,170 C55,145 80,90 110,55 C140,28 170,15 200,10" fill="none" stroke="#e8913a" stroke-width="2" stroke-dasharray="5,3"/>
+          <rect x="115" y="128" width="80" height="36" fill="white" rx="4" stroke="#cdd7e3"/>
+          <circle cx="125" cy="140" r="4" fill="#1250bb"/>
+          <text x="133" y="144" fill="#1250bb" font-size="10" font-family="sans-serif" font-weight="bold">AUC=0.90</text>
+          <circle cx="125" cy="156" r="4" fill="#e8913a"/>
+          <text x="133" y="160" fill="#8c3d00" font-size="10" font-family="sans-serif" font-weight="bold">AUC=0.75</text>
+          <text x="112" y="185" fill="#52697f" font-size="10" text-anchor="middle" font-family="sans-serif">거짓 양성률 (1-특이도)</text>
+          <text x="12" y="95" fill="#52697f" font-size="10" text-anchor="middle" font-family="sans-serif" transform="rotate(-90,12,95)">민감도(TPR)</text>
+        </svg>
+        <p>임계값마다 민감도 vs (1−특이도) 좌표 찍어 연결<br>곡선이 위로 볼록할수록 성능 우수<br>AUC = 1.0 (완벽) → 0.5 (랜덤 수준)</p>
+      </div>
+
+      <div class="viz-panel">
+        <h5>④ 평가지표 선택 기준</h5>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:var(--tl);color:#fff;">
+              <th style="padding:8px 10px;font-weight:700;">데이터 상황</th>
+              <th style="padding:8px 10px;font-weight:700;">권장 지표</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:var(--gn2);">
+              <td style="padding:8px 10px;color:var(--sub);">연속형 outcome</td>
+              <td style="padding:8px 10px;font-weight:700;color:var(--gn);">RMSE, R²</td>
+            </tr>
+            <tr style="background:var(--bl2);">
+              <td style="padding:8px 10px;color:var(--sub);">범주형 · 클래스 균형</td>
+              <td style="padding:8px 10px;font-weight:700;color:var(--bl);">ROC / AUC</td>
+            </tr>
+            <tr style="background:var(--rd2);">
+              <td style="padding:8px 10px;color:var(--sub);">범주형 · 클래스 불균형<br><small>(1:9 이상)</small></td>
+              <td style="padding:8px 10px;font-weight:700;color:var(--rd);">PRC / AUC-PRC</td>
+            </tr>
+            <tr style="background:var(--or2);">
+              <td style="padding:8px 10px;color:var(--sub);">Precision↔Recall 균형 필요</td>
+              <td style="padding:8px 10px;font-weight:700;color:var(--or);">F1 score</td>
+            </tr>
+            <tr style="background:var(--pu2);">
+              <td style="padding:8px 10px;color:var(--sub);">FN 최소화 중요<br>(결핵·전염병)</td>
+              <td style="padding:8px 10px;font-weight:700;color:var(--pu);">민감도(Recall) ↑</td>
+            </tr>
+            <tr style="background:var(--sur2);">
+              <td style="padding:8px 10px;color:var(--sub);">FP 최소화 중요<br>(불필요한 치료 방지)</td>
+              <td style="padding:8px 10px;font-weight:700;color:var(--tl);">정밀도(Precision) ↑</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB 2: 회귀·예측 ══ -->
+<div id="t2" class="tc">
+  <div class="sec">
+    <div class="sh"><span class="si">📈</span><span class="st">선형회귀 · 다중선형회귀 · 로지스틱 회귀</span><span class="sb sgn">13주차</span></div>
+
+    <!-- 선형회귀 시각화 -->
+    <div class="viz-2col">
+      <div class="viz-panel">
+        <h5>단순 선형회귀 — 회귀선</h5>
+        <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:260px;height:auto;">
+          <rect width="220" height="180" fill="#e6f7ed" rx="8"/>
+          <!-- 축 -->
+          <line x1="25" y1="155" x2="205" y2="155" stroke="#0a6e35" stroke-width="1.5"/>
+          <line x1="25" y1="10"  x2="25"  y2="155" stroke="#0a6e35" stroke-width="1.5"/>
+          <!-- 산점도 -->
+          <circle cx="45"  cy="140" r="4.5" fill="#0a6e35" opacity="0.7"/>
+          <circle cx="62"  cy="128" r="4.5" fill="#0a6e35" opacity="0.7"/>
+          <circle cx="78"  cy="118" r="4.5" fill="#0a6e35" opacity="0.7"/>
+          <circle cx="90"  cy="105" r="4.5" fill="#0a6e35" opacity="0.7"/>
+          <circle cx="108" cy="95"  r="4.5" fill="#0a6e35" opacity="0.7"/>
+          <circle cx="122" cy="80"  r="4.5" fill="#0a6e35" opacity="0.7"/>
+          <circle cx="138" cy="68"  r="4.5" fill="#0a6e35" opacity="0.7"/>
+          <circle cx="155" cy="55"  r="4.5" fill="#0a6e35" opacity="0.7"/>
+          <circle cx="170" cy="45"  r="4.5" fill="#0a6e35" opacity="0.7"/>
+          <circle cx="188" cy="32"  r="4.5" fill="#0a6e35" opacity="0.7"/>
+          <!-- 회귀선 -->
+          <line x1="35" y1="148" x2="198" y2="25" stroke="#b01717" stroke-width="2.5"/>
+          <!-- 잔차 예시 -->
+          <line x1="108" y1="95" x2="108" y2="83" stroke="#8c3d00" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="112" y="90" fill="#8c3d00" font-size="9" font-family="sans-serif">잔차</text>
+          <!-- 수식 -->
+          <rect x="40" y="12" width="120" height="20" fill="white" rx="4" opacity="0.85"/>
+          <text x="100" y="25" fill="#b01717" font-size="10" text-anchor="middle" font-family="sans-serif" font-weight="bold">Y = wX + b (최소제곱법)</text>
+          <!-- 축 레이블 -->
+          <text x="115" y="170" fill="#0a6e35" font-size="10" text-anchor="middle" font-family="sans-serif">X (예측자)</text>
+          <text x="12" y="90" fill="#0a6e35" font-size="10" text-anchor="middle" font-family="sans-serif" transform="rotate(-90,12,90)">Y (결과)</text>
+        </svg>
+        <p>X와 Y의 관계를 직선으로 요약<br>잔차(residual) 제곱합 최소화<br>Pearson 상관계수로 정확도 확인</p>
+      </div>
+
+      <div class="viz-panel">
+        <h5>로지스틱 회귀 — S자 곡선</h5>
+        <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:260px;height:auto;">
+          <rect width="220" height="180" fill="#eaf1fd" rx="8"/>
+          <!-- 축 -->
+          <line x1="25" y1="155" x2="205" y2="155" stroke="#1250bb" stroke-width="1.5"/>
+          <line x1="25" y1="10"  x2="25"  y2="155" stroke="#1250bb" stroke-width="1.5"/>
+          <!-- y=0, y=1 라인 -->
+          <line x1="25" y1="25"  x2="205" y2="25"  stroke="#cdd7e3" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="25" y1="140" x2="205" y2="140" stroke="#cdd7e3" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="18" y="28"  fill="#52697f" font-size="9" text-anchor="end" font-family="sans-serif">1</text>
+          <text x="18" y="143" fill="#52697f" font-size="9" text-anchor="end" font-family="sans-serif">0</text>
+          <!-- 데이터 점 -->
+          <circle cx="40"  cy="140" r="4" fill="#e88080" opacity="0.8"/>
+          <circle cx="60"  cy="140" r="4" fill="#e88080" opacity="0.8"/>
+          <circle cx="80"  cy="135" r="4" fill="#e88080" opacity="0.8"/>
+          <circle cx="100" cy="125" r="4" fill="#5dc287" opacity="0.8"/>
+          <circle cx="120" cy="40"  r="4" fill="#5dc287" opacity="0.8"/>
+          <circle cx="145" cy="28"  r="4" fill="#5dc287" opacity="0.8"/>
+          <circle cx="165" cy="25"  r="4" fill="#5dc287" opacity="0.8"/>
+          <circle cx="185" cy="25"  r="4" fill="#5dc287" opacity="0.8"/>
+          <!-- S커브 -->
+          <path d="M25,142 C50,140 70,138 90,128 C105,118 110,80 118,50 C125,28 145,26 170,25 C185,25 200,25 205,25" fill="none" stroke="#1250bb" stroke-width="2.5"/>
+          <!-- 임계값 -->
+          <line x1="104" y1="10" x2="104" y2="155" stroke="#8c3d00" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="106" y="18" fill="#8c3d00" font-size="9" font-family="sans-serif" font-weight="bold">임계값(0.5)</text>
+          <!-- 레이블 -->
+          <rect x="30" y="155" width="30" height="14" fill="var(--rd2)" rx="3"/>
+          <text x="45" y="165" fill="#b01717" font-size="9" text-anchor="middle" font-family="sans-serif" font-weight="bold">음성(0)</text>
+          <rect x="155" y="155" width="30" height="14" fill="var(--gn2)" rx="3"/>
+          <text x="170" y="165" fill="#0a6e35" font-size="9" text-anchor="middle" font-family="sans-serif" font-weight="bold">양성(1)</text>
+        </svg>
+        <p>종속변수 이분형일 때 사용<br>확률을 0~1 사이로 예측 (S커브)<br>오즈비(OR)로 결과 해석</p>
+      </div>
+    </div>
+
+    <!-- GLM 선택 기준 다이어그램 -->
+    <div class="viz-wrap" style="padding-top:0;">
+      <div class="viz-title">⚙️ GLM 링크 함수 선택 기준</div>
+      <svg viewBox="0 0 580 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:110px;">
+        <rect width="580" height="110" fill="#f6f9fc" rx="8"/>
+        <!-- 시작 -->
+        <rect x="10" y="35" width="90" height="40" rx="8" fill="#pu2" fill-opacity="0.2" stroke="#a87ee8" stroke-width="1.5"/>
+        <text x="55" y="53" fill="#5218a8" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">종속변수</text>
+        <text x="55" y="67" fill="#5218a8" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">형태는?</text>
+        <!-- 화살표 -->
+        <line x1="100" y1="55" x2="120" y2="55" stroke="#cdd7e3" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="120" y1="55" x2="120" y2="25" stroke="#cdd7e3" stroke-width="1.5"/>
+        <line x1="120" y1="55" x2="120" y2="85" stroke="#cdd7e3" stroke-width="1.5"/>
+        <line x1="120" y1="25" x2="140" y2="25" stroke="#cdd7e3" stroke-width="1.5"/>
+        <line x1="120" y1="55" x2="140" y2="55" stroke="#cdd7e3" stroke-width="1.5"/>
+        <line x1="120" y1="85" x2="140" y2="85" stroke="#cdd7e3" stroke-width="1.5"/>
+        <!-- 연속형 -->
+        <rect x="140" y="10" width="80" height="30" rx="6" fill="#e6f7ed" stroke="#5dc287" stroke-width="1.5"/>
+        <text x="180" y="28" fill="#0a6e35" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">연속형</text>
+        <line x1="220" y1="25" x2="240" y2="25" stroke="#cdd7e3" stroke-width="1.5"/>
+        <rect x="240" y="10" width="150" height="30" rx="6" fill="#0a6e35"/>
+        <text x="315" y="28" fill="#fff" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">선형회귀 (Gaussian)</text>
+        <!-- 이분형 -->
+        <rect x="140" y="40" width="80" height="30" rx="6" fill="#eaf1fd" stroke="#9bb8f2" stroke-width="1.5"/>
+        <text x="180" y="58" fill="#1250bb" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">이분형</text>
+        <line x1="220" y1="55" x2="240" y2="55" stroke="#cdd7e3" stroke-width="1.5"/>
+        <rect x="240" y="40" width="150" height="30" rx="6" fill="#1250bb"/>
+        <text x="315" y="58" fill="#fff" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">로지스틱 회귀 (logit)</text>
+        <!-- 횟수형 -->
+        <rect x="140" y="70" width="80" height="30" rx="6" fill="#fff2e5" stroke="#e8913a" stroke-width="1.5"/>
+        <text x="180" y="88" fill="#8c3d00" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">횟수(이산)</text>
+        <line x1="220" y1="85" x2="240" y2="85" stroke="#cdd7e3" stroke-width="1.5"/>
+        <rect x="240" y="70" width="150" height="30" rx="6" fill="#8c3d00"/>
+        <text x="315" y="88" fill="#fff" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">포아송 회귀 (log)</text>
+        <!-- VIF 메모 -->
+        <rect x="405" y="10" width="165" height="90" rx="6" fill="white" stroke="#e8913a" stroke-width="1.5"/>
+        <text x="487" y="28" fill="#8c3d00" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">⚠️ 다중공선성 주의</text>
+        <text x="487" y="44" fill="#52697f" font-size="10" text-anchor="middle" font-family="sans-serif">예측자 간 독립성 가정</text>
+        <text x="487" y="60" fill="#52697f" font-size="10" text-anchor="middle" font-family="sans-serif">VIF 계산 권고</text>
+        <text x="487" y="76" fill="#b01717" font-size="10" text-anchor="middle" font-family="sans-serif" font-weight="bold">VIF &gt; 10 → 변수 제거</text>
+        <text x="487" y="92" fill="#52697f" font-size="10" text-anchor="middle" font-family="sans-serif">(다중선형회귀만 해당)</text>
+        <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#cdd7e3"/></marker></defs>
+      </svg>
+    </div>
+    <div class="ibox" style="margin-top:0;">💡 <strong>선형회귀:</strong> 잔차제곱합 최소화(OLS) &nbsp;|&nbsp; <strong>로지스틱 회귀:</strong> 최대우도 추정법(MLE) &nbsp;|&nbsp; <strong>다중공선성:</strong> VIF &gt; 10인 변수 제거 권고</div>
+  </div>
+</div>
+
+<!-- ══ TAB 3: 생존분석 ══ -->
+<div id="t3" class="tc">
+  <div class="sec">
+    <div class="sh"><span class="si">🧬</span><span class="st">생존분석 · 카플란-마이어 · Cox 비례위험모형</span><span class="sb stl">13~14주차</span></div>
+
+    <!-- KM 곡선 + Cox HR 시각화 -->
+    <div class="viz-2col">
+      <div class="viz-panel">
+        <h5>카플란-마이어(KM) 생존곡선</h5>
+        <svg viewBox="0 0 220 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:260px;height:auto;">
+          <rect width="220" height="190" fill="#e5f7f7" rx="8"/>
+          <!-- 축 -->
+          <line x1="30" y1="155" x2="205" y2="155" stroke="#0a6e6e" stroke-width="1.5"/>
+          <line x1="30" y1="15"  x2="30"  y2="155" stroke="#0a6e6e" stroke-width="1.5"/>
+          <!-- y축 레이블 -->
+          <text x="25" y="19"  fill="#52697f" font-size="9" text-anchor="end" font-family="sans-serif">1.0</text>
+          <text x="25" y="55"  fill="#52697f" font-size="9" text-anchor="end" font-family="sans-serif">0.8</text>
+          <text x="25" y="90"  fill="#52697f" font-size="9" text-anchor="end" font-family="sans-serif">0.6</text>
+          <text x="25" y="125" fill="#52697f" font-size="9" text-anchor="end" font-family="sans-serif">0.4</text>
+          <text x="25" y="155" fill="#52697f" font-size="9" text-anchor="end" font-family="sans-serif">0.2</text>
+          <line x1="28" y1="18"  x2="32" y2="18"  stroke="#cdd7e3" stroke-width="1"/>
+          <line x1="28" y1="53"  x2="32" y2="53"  stroke="#cdd7e3" stroke-width="1"/>
+          <line x1="28" y1="88"  x2="32" y2="88"  stroke="#cdd7e3" stroke-width="1"/>
+          <line x1="28" y1="123" x2="32" y2="123" stroke="#cdd7e3" stroke-width="1"/>
+          <!-- 그룹A(처리군) — 파란 계단 -->
+          <path d="M30,18 H75 V28 H95 V45 H115 V62 H135 V82 H160 V105 H205" fill="none" stroke="#1250bb" stroke-width="2.5"/>
+          <!-- 그룹B(대조군) — 빨간 계단 -->
+          <path d="M30,18 H55 V38 H70 V62 H88 V88 H105 V118 H130 V145 H205" fill="none" stroke="#b01717" stroke-width="2.5" stroke-dasharray="6,3"/>
+          <!-- 중도절단 표시 -->
+          <text x="80" y="24" fill="#1250bb" font-size="12" font-family="sans-serif">+</text>
+          <text x="145" y="78" fill="#1250bb" font-size="12" font-family="sans-serif">+</text>
+          <text x="92" y="58" fill="#b01717" font-size="12" font-family="sans-serif">+</text>
+          <!-- 범례 -->
+          <rect x="130" y="105" width="70" height="42" fill="white" rx="4" stroke="#cdd7e3"/>
+          <line x1="135" y1="117" x2="152" y2="117" stroke="#1250bb" stroke-width="2"/>
+          <text x="156" y="121" fill="#1250bb" font-size="9" font-family="sans-serif" font-weight="bold">처리군</text>
+          <line x1="135" y1="133" x2="152" y2="133" stroke="#b01717" stroke-width="2" stroke-dasharray="4,2"/>
+          <text x="156" y="137" fill="#b01717" font-size="9" font-family="sans-serif" font-weight="bold">대조군</text>
+          <!-- + 설명 -->
+          <text x="32" y="173" fill="#52697f" font-size="9" font-family="sans-serif">+ = 중도절단(Censored)</text>
+          <!-- 축 레이블 -->
+          <text x="118" y="185" fill="#0a6e6e" font-size="10" text-anchor="middle" font-family="sans-serif">시간 (Time)</text>
+          <text x="10" y="88" fill="#0a6e6e" font-size="9" text-anchor="middle" font-family="sans-serif" transform="rotate(-90,10,88)">생존율 S(t)</text>
+        </svg>
+        <p>계단 형태로 시간에 따른 생존율 표시<br><strong>+</strong> 표시 = 중도절단 (사건 미발생으로 추적 종료)<br>Log-rank test로 두 곡선 차이 검정</p>
+      </div>
+
+      <div class="viz-panel">
+        <h5>Cox 비례위험모형 — HR(위험비) 해석</h5>
+        <svg viewBox="0 0 220 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:260px;height:auto;">
+          <rect width="220" height="190" fill="#e5f7f7" rx="8"/>
+          <!-- 제목 -->
+          <text x="110" y="20" fill="#0a6e6e" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">Forest Plot (HR with 95% CI)</text>
+          <!-- 기준선 HR=1 -->
+          <line x1="130" y1="30" x2="130" y2="165" stroke="#8c3d00" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="130" y="175" fill="#8c3d00" font-size="9" text-anchor="middle" font-family="sans-serif" font-weight="bold">HR=1 (차이없음)</text>
+          <!-- 변수 행들 -->
+          <!-- 변수A: HR=0.61 (위험감소, 유의) -->
+          <text x="10" y="55" fill="#52697f" font-size="10" font-family="sans-serif">커피 섭취</text>
+          <line x1="80" y1="50" x2="120" y2="50" stroke="#1250bb" stroke-width="2"/>
+          <circle cx="95" cy="50" r="5" fill="#1250bb"/>
+          <text x="125" y="54" fill="#1250bb" font-size="9" font-family="sans-serif" font-weight="bold">0.61*</text>
+          <text x="70" y="64" fill="#52697f" font-size="8" font-family="sans-serif">[0.45–0.82]</text>
+          <!-- 변수B: HR=1.42 (위험증가, 유의) -->
+          <text x="10" y="93" fill="#52697f" font-size="10" font-family="sans-serif">고령(연령↑)</text>
+          <line x1="135" y1="88" x2="180" y2="88" stroke="#b01717" stroke-width="2"/>
+          <circle cx="155" cy="88" r="5" fill="#b01717"/>
+          <text x="183" y="92" fill="#b01717" font-size="9" font-family="sans-serif" font-weight="bold">1.42*</text>
+          <text x="125" y="102" fill="#52697f" font-size="8" font-family="sans-serif">[1.10–1.83]</text>
+          <!-- 변수C: HR=1.08 (유의하지않음) -->
+          <text x="10" y="131" fill="#52697f" font-size="10" font-family="sans-serif">체중감소</text>
+          <line x1="110" y1="126" x2="165" y2="126" stroke="#8b949e" stroke-width="2"/>
+          <circle cx="135" cy="126" r="5" fill="#8b949e"/>
+          <text x="168" y="130" fill="#8b949e" font-size="9" font-family="sans-serif">1.08</text>
+          <text x="102" y="140" fill="#52697f" font-size="8" font-family="sans-serif">[0.83–1.40]</text>
+          <!-- HR 구간 레이블 -->
+          <text x="60" y="185" fill="#0a6e35" font-size="9" font-family="sans-serif">← HR&lt;1 위험감소</text>
+          <text x="140" y="185" fill="#b01717" font-size="9" font-family="sans-serif">HR&gt;1 위험증가 →</text>
+          <text x="185" y="65" fill="#b01717" font-size="8" font-family="sans-serif">* p&lt;0.05</text>
+        </svg>
+        <p><strong>HR &lt; 1:</strong> 위험 감소 (예: 커피 → 심방세동 재발 0.61배)<br><strong>HR &gt; 1:</strong> 위험 증가 (예: 고령 → 사망위험 1.42배)<br>95% CI가 HR=1 포함하면 유의하지 않음</p>
+      </div>
+    </div>
+
+    <!-- KM vs Cox 비교 -->
+    <div class="dbox">
+      <div class="dhd">🔑 KM + Log-rank vs Cox 비례위험모형 — 언제 무엇을 쓰나?</div>
+      <div class="dbd">
+        <strong>Kaplan-Meier + Log-rank:</strong> 시각적으로 직관적 | 이분형 변수 1개만 처리 | 집단 간 생존곡선 비교<br>
+        <strong>Cox 비례위험모형:</strong> 다변량 분석 가능 | 연속형 변수 그대로 투입 | HR(위험비)로 각 변수 기여도 해석<br><br>
+        <strong>비례위험 가정 확인 (Schoenfeld residual test / cox.zph):</strong><br>
+        → 각 predictor별 p &gt; 0.05 → 가정 만족 → Cox 모델 정당화<br>
+        → p &lt; 0.05 → 가정 위반 → 해당 변수 제거 또는 다른 모델 고려
+      </div>
+    </div>
+    <div class="cw">
+      <table class="ct">
+        <thead><tr><th>방법</th><th>변수 수</th><th>변수 형태</th><th>결과 표현</th><th>단점</th></tr></thead>
+        <tbody>
+          <tr><th>Kaplan-Meier</th><td class="cpg">1개</td><td>이분형만</td><td>생존 곡선 그래프</td><td>다변량 불가</td></tr>
+          <tr><th>Cox 비례위험</th><td class="cpg">여러 개</td><td>연속형·범주형</td><td>HR (위험비)</td><td>비례위험 가정 필요</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.tc').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(e=>e.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>

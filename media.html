@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미디어와 저널리즘 핵심 정리</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--bg2:#f5f5f5;--bg3:#eeeeee;
+  --text:#111111;--text2:#555555;--text3:#888888;
+  --border:#e0e0e0;--border2:#cccccc;
+  --info-bg:#eff6ff;--info-text:#1e40af;--info-border:#bfdbfe;
+  --success-bg:#f0fdf4;--success-text:#15803d;--success-border:#86efac;
+  --danger-bg:#fef2f2;--danger-text:#b91c1c;--danger-border:#fca5a5;
+  --warn-bg:#fffbeb;--warn-text:#92400e;--warn-border:#fcd34d;
+  --radius:8px;--radius-lg:12px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#1a1a1a;--bg2:#242424;--bg3:#2e2e2e;
+    --text:#f0f0f0;--text2:#aaaaaa;--text3:#777777;
+    --border:#333333;--border2:#444444;
+    --info-bg:#1e3a5f;--info-text:#93c5fd;--info-border:#1e40af;
+    --success-bg:#14532d;--success-text:#86efac;--success-border:#15803d;
+    --danger-bg:#450a0a;--danger-text:#fca5a5;--danger-border:#b91c1c;
+    --warn-bg:#451a03;--warn-text:#fcd34d;--warn-border:#92400e;
+  }
+}
+body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.7}
+.container{max-width:860px;margin:0 auto;padding:2rem 1.5rem}
+h1{font-size:22px;font-weight:500;margin-bottom:4px}
+.subtitle{font-size:13px;color:var(--text2);margin-bottom:1.5rem}
+
+/* nav */
+.nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
+.nav-btn{padding:6px 14px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer;transition:all .15s}
+.nav-btn:hover,.nav-btn.active{background:var(--bg3);color:var(--text);border-color:var(--border2);font-weight:500}
+.section{display:none}.section.active{display:block}
+
+/* cards */
+.card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:12px}
+.card-title{font-size:15px;font-weight:500;color:var(--text);margin-bottom:8px}
+.card-sub{font-size:13px;color:var(--text2);line-height:1.65}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:600px){.grid2,.grid3,.grid4{grid-template-columns:1fr 1fr}}
+@media(max-width:400px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+
+/* stat */
+.stat{background:var(--bg2);border-radius:var(--radius);padding:.75rem 1rem;text-align:center}
+.stat-num{font-size:22px;font-weight:500;color:var(--text)}
+.stat-label{font-size:12px;color:var(--text2);margin-top:3px}
+
+/* tags */
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tag{font-size:11px;padding:3px 10px;border-radius:12px;border:0.5px solid var(--border2);color:var(--text2)}
+
+/* badge */
+.badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:12px;font-weight:500}
+.badge-blue{background:var(--info-bg);color:var(--info-text);border:0.5px solid var(--info-border)}
+.badge-red{background:var(--danger-bg);color:var(--danger-text);border:0.5px solid var(--danger-border)}
+.badge-green{background:var(--success-bg);color:var(--success-text);border:0.5px solid var(--success-border)}
+.badge-warn{background:var(--warn-bg);color:var(--warn-text);border:0.5px solid var(--warn-border)}
+
+/* timeline */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:var(--border2)}
+.t-item{position:relative;margin-bottom:16px}
+.t-dot{position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border2)}
+.t-dot.filled{background:var(--text2)}
+.t-date{font-size:12px;color:var(--text2);margin-bottom:3px}
+.t-text{font-size:13px;color:var(--text);line-height:1.6}
+
+/* pros cons */
+.pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:500px){.pc-grid{grid-template-columns:1fr}}
+.pc-box{border-radius:var(--radius);padding:.75rem 1rem}
+.pc-box.pros{background:var(--success-bg);border:0.5px solid var(--success-border)}
+.pc-box.cons{background:var(--danger-bg);border:0.5px solid var(--danger-border)}
+.pc-label{font-size:12px;font-weight:500;margin-bottom:8px}
+.pc-label.p{color:var(--success-text)}.pc-label.c{color:var(--danger-text)}
+.pc-item{font-size:12px;color:var(--text2);margin-bottom:5px;padding-left:12px;position:relative;line-height:1.5}
+.pc-item::before{content:'·';position:absolute;left:2px}
+
+/* callout */
+.callout{border-left:3px solid var(--info-border);background:var(--info-bg);border-radius:0 var(--radius) var(--radius) 0;padding:10px 14px;margin:8px 0;font-size:13px;color:var(--info-text)}
+.callout strong{color:var(--info-text)}
+
+/* quiz */
+.quiz-q{font-size:14px;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.6}
+.quiz-opts{display:flex;flex-direction:column;gap:7px}
+.quiz-opt{padding:9px 14px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--bg);font-size:13px;color:var(--text);cursor:pointer;text-align:left;transition:all .15s;line-height:1.5}
+.quiz-opt:hover{background:var(--bg2)}
+.quiz-opt.correct{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text)}
+.quiz-opt.wrong{background:var(--danger-bg);border-color:var(--danger-border);color:var(--danger-text)}
+.quiz-explain{font-size:12px;color:var(--text2);margin-top:10px;padding:8px 12px;background:var(--bg2);border-radius:var(--radius);line-height:1.6;display:none}
+.quiz-nav{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.quiz-prog{font-size:12px;color:var(--text2)}
+.q-btn{padding:7px 16px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--bg);font-size:13px;cursor:pointer;color:var(--text)}
+.q-btn:hover{background:var(--bg2)}
+.score-box{text-align:center;padding:2rem;background:var(--bg2);border-radius:var(--radius-lg)}
+
+/* accordion */
+.term-item{border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:7px}
+.term-head{padding:10px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--bg)}
+.term-head:hover{background:var(--bg2)}
+.term-word{font-size:14px;font-weight:500;color:var(--text)}
+.term-body{padding:0 14px;font-size:13px;color:var(--text2);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .2s,padding .2s}
+.term-body.open{max-height:200px;padding:10px 14px}
+.chevron{font-size:14px;color:var(--text2);transition:transform .2s}
+.chevron.open{transform:rotate(180deg)}
+
+/* progress bar */
+.prog-bar{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.prog-fill{height:100%;border-radius:2px;background:var(--text3);transition:width .3s}
+
+.sec-header{margin-bottom:1.25rem}
+.sec-title{font-size:18px;font-weight:500;color:var(--text);margin-bottom:4px}
+.sec-desc{font-size:13px;color:var(--text2)}
+.divider{height:0.5px;background:var(--border);margin:16px 0}
+.flow-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.flow-item{background:var(--bg2);border-radius:var(--radius);padding:7px 12px;font-size:12px;color:var(--text2)}
+.flow-arrow{color:var(--text3);font-size:14px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>📰 미디어와 저널리즘 핵심 정리</h1>
+<div class="subtitle">레거시 미디어 · 탐사보도 · 유튜브 저널리즘 · 박종철 사건 · 징벌적 손해배상제도</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showSec('overview')"><i class="ti ti-layout-grid"></i> 개요</button>
+  <button class="nav-btn" onclick="showSec('legacy')"><i class="ti ti-news"></i> 레거시 미디어</button>
+  <button class="nav-btn" onclick="showSec('youtube')"><i class="ti ti-brand-youtube"></i> 유튜브</button>
+  <button class="nav-btn" onclick="showSec('investigative')"><i class="ti ti-search"></i> 탐사보도</button>
+  <button class="nav-btn" onclick="showSec('park')"><i class="ti ti-calendar-event"></i> 박종철 사건</button>
+  <button class="nav-btn" onclick="showSec('punitive')"><i class="ti ti-scale"></i> 징벌적 배상</button>
+  <button class="nav-btn" onclick="showSec('terms')"><i class="ti ti-book"></i> 용어 사전</button>
+  <button class="nav-btn" onclick="showSec('quiz')"><i class="ti ti-pencil"></i> 퀴즈</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="sec-overview" class="section active">
+  <div class="sec-header">
+    <div class="sec-title">전체 토픽 지도</div>
+    <div class="sec-desc">섹션을 클릭해 학습하거나 퀴즈로 최종 점검하세요</div>
+  </div>
+  <div class="grid2">
+    <div class="card" style="cursor:pointer" onclick="showSec('legacy')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <i class="ti ti-news" style="font-size:20px;color:var(--text2)"></i>
+        <span class="card-title" style="margin:0">레거시 미디어의 위기</span>
+      </div>
+      <div class="card-sub">뉴 미디어 등장, 신문·TV의 쇠락, 신뢰도 변화</div>
+      <div class="tags" style="margin-top:8px;margin-bottom:0">
+        <span class="tag">레거시 미디어</span><span class="tag">게이트키핑</span><span class="tag">가짜 뉴스</span>
+      </div>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="showSec('youtube')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <i class="ti ti-brand-youtube" style="font-size:20px;color:var(--text2)"></i>
+        <span class="card-title" style="margin:0">유튜브와 극단적 콘텐츠</span>
+      </div>
+      <div class="card-sub">알고리즘, 대안 우파, 크라이스트처치 사건</div>
+      <div class="tags" style="margin-top:8px;margin-bottom:0">
+        <span class="tag">추천 알고리즘</span><span class="tag">극단화</span><span class="tag">크라이스트처치콜</span>
+      </div>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="showSec('investigative')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <i class="ti ti-search" style="font-size:20px;color:var(--text2)"></i>
+        <span class="card-title" style="margin:0">탐사보도</span>
+      </div>
+      <div class="card-sub">정의, 핵심 요소, 대표 사례 5가지</div>
+      <div class="tags" style="margin-top:8px;margin-bottom:0">
+        <span class="tag">증거 중심</span><span class="tag">테라노스</span><span class="tag">노근리</span>
+      </div>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="showSec('park')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <i class="ti ti-calendar-event" style="font-size:20px;color:var(--text2)"></i>
+        <span class="card-title" style="margin:0">박종철 고문치사 사건</span>
+      </div>
+      <div class="card-sub">1987년 사건 경과, 동아일보 역할, 6월 민주항쟁</div>
+      <div class="tags" style="margin-top:8px;margin-bottom:0">
+        <span class="tag">6월 민주항쟁</span><span class="tag">6.29 선언</span><span class="tag">직선제</span>
+      </div>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="showSec('punitive')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <i class="ti ti-scale" style="font-size:20px;color:var(--text2)"></i>
+        <span class="card-title" style="margin:0">징벌적 손해배상제도</span>
+      </div>
+      <div class="card-sub">정의, 찬반 논거, 실제 판결 현황</div>
+      <div class="tags" style="margin-top:8px;margin-bottom:0">
+        <span class="tag">최대 3배 배상</span><span class="tag">언론 자유</span>
+      </div>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="showSec('quiz')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <i class="ti ti-pencil" style="font-size:20px;color:var(--text2)"></i>
+        <span class="card-title" style="margin:0">퀴즈로 복습</span>
+      </div>
+      <div class="card-sub">전체 내용 10문항 — 시험 대비 최종 점검</div>
+      <div class="tags" style="margin-top:8px;margin-bottom:0">
+        <span class="tag">서술형 대비</span><span class="tag">용어 확인</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEGACY -->
+<div id="sec-legacy" class="section">
+  <div class="sec-header">
+    <div class="sec-title">레거시 미디어의 위기와 변화</div>
+    <div class="sec-desc">뉴 미디어 등장으로 전통 미디어가 겪는 구조적 변화</div>
+  </div>
+  <div class="grid4" style="margin-bottom:14px">
+    <div class="stat"><div class="stat-num">52.6%</div><div class="stat-label">스마트폰 뉴스 소비</div></div>
+    <div class="stat"><div class="stat-num">70.6%</div><div class="stat-label">20대 스마트폰 비율</div></div>
+    <div class="stat"><div class="stat-num">22.8%</div><div class="stat-label">TV 뉴스 소비</div></div>
+    <div class="stat"><div class="stat-num">2.8%</div><div class="stat-label">신문 뉴스 소비</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">미디어 신뢰도 순위</div>
+    <div id="trust-chart" style="margin-top:10px"></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">레거시 미디어 문제점</div>
+      <div class="card-sub">
+        <div style="margin-bottom:6px">· 속보 경쟁에서 밀리고 차별성 없는 기사 양산</div>
+        <div style="margin-bottom:6px">· 가짜 뉴스 필터링 실패, 정치 편향 보도 심화</div>
+        <div style="margin-bottom:6px">· 진영 논리 부채질로 사회 갈등 조장</div>
+        <div>· 독점 시대 — 콘텐츠보다 유통망이 경쟁력의 본질</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">뉴 미디어 부작용</div>
+      <div class="card-sub">
+        <div style="margin-bottom:6px">· 게이트키핑 기능 상실 → 가짜 뉴스 양산</div>
+        <div style="margin-bottom:6px">· 음해·음모론·허위 사실 유포 심각</div>
+        <div style="margin-bottom:6px">· 대표 사례: <strong>'타진요'</strong>(2009)</div>
+        <div>· 법원 판결 이후에도 부작용 계속</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">독점 시대 → 해체 과정</div>
+    <div class="flow-row">
+      <div class="flow-item">신문사 — 윤전기 보유 면허</div>
+      <span class="flow-arrow"><i class="ti ti-arrow-right"></i></span>
+      <div class="flow-item">방송사 — 전파 사용 면허</div>
+      <span class="flow-arrow"><i class="ti ti-arrow-right"></i></span>
+      <div class="flow-item" style="background:var(--warn-bg);color:var(--warn-text)">플랫폼 독점 붕괴</div>
+      <span class="flow-arrow"><i class="ti ti-arrow-right"></i></span>
+      <div class="flow-item" style="background:var(--danger-bg);color:var(--danger-text)">콘텐츠 경쟁력 약화</div>
+    </div>
+  </div>
+</div>
+
+<!-- YOUTUBE -->
+<div id="sec-youtube" class="section">
+  <div class="sec-header">
+    <div class="sec-title">유튜브와 극단적 콘텐츠 문제</div>
+    <div class="sec-desc">알고리즘, 극단화 경로, 크라이스트처치콜</div>
+  </div>
+  <div class="grid3" style="margin-bottom:14px">
+    <div class="stat"><div class="stat-num">3배</div><div class="stat-label">2년간 사용시간 증가</div></div>
+    <div class="stat"><div class="stat-num">257억분</div><div class="stat-label">2018.2 월간 사용시간</div></div>
+    <div class="stat"><div class="stat-num">86%</div><div class="stat-label">13~24세 이용률</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">극단화 경로 — '빨간 약' 비유</div>
+    <div class="flow-row">
+      <div class="flow-item">일반 콘텐츠 시청</div>
+      <span class="flow-arrow"><i class="ti ti-arrow-right"></i></span>
+      <div class="flow-item">알고리즘 추천</div>
+      <span class="flow-arrow"><i class="ti ti-arrow-right"></i></span>
+      <div class="flow-item" style="background:var(--warn-bg);color:var(--warn-text)">자극적 콘텐츠</div>
+      <span class="flow-arrow"><i class="ti ti-arrow-right"></i></span>
+      <div class="flow-item" style="background:var(--danger-bg);color:var(--danger-text)">극단적 세계관</div>
+    </div>
+    <div class="card-sub" style="margin-top:10px">추천 알고리즘이 '토끼 굴 안내자' 역할 — 무심코 시작해 점점 극단적 콘텐츠에 노출</div>
+  </div>
+  <div class="card">
+    <div class="card-title">2019 크라이스트처치 총기 난사 사건</div>
+    <div class="card-sub">백인 우월주의자가 페이스북 라이브로 범행을 생중계. 극단주의 온라인 콘텐츠가 실제 오프라인 범죄로 연결된 대표 사례.</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">유튜브 대응 조치</div>
+      <div class="card-sub">
+        <div style="margin-bottom:5px">· 증오 표현 커뮤니티 가이드라인 발표</div>
+        <div style="margin-bottom:5px">· 차별·배제 콘텐츠 삭제</div>
+        <div style="margin-bottom:5px">· 3회 경고 시 채널 해지</div>
+        <div>· 자동 삭제 820만 건 중 670만 건(약 82%)</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">크라이스트처치콜 (2019)</div>
+      <div class="card-sub">
+        <div style="margin-bottom:6px"><span class="badge badge-green">참여</span> 17개국 + 주요 IT 기업 — 테러·증오 콘텐츠 즉각 차단 합의</div>
+        <div><span class="badge badge-red">불참</span> 미국 — 트럼프 행정부, 소셜미디어 검열 우려로 불참</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">각국 법적 제재</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:6px">
+      <span class="badge badge-blue">독일 — 대중 선동죄 형법 제130조</span>
+      <span class="badge badge-blue">독일 — 네트워크집행법</span>
+      <span class="badge badge-blue">영국 — 공공질서법</span>
+      <span class="badge badge-blue">미국 — 차별 금지법</span>
+    </div>
+  </div>
+</div>
+
+<!-- INVESTIGATIVE -->
+<div id="sec-investigative" class="section">
+  <div class="sec-header">
+    <div class="sec-title">탐사보도의 정의와 사례</div>
+    <div class="sec-desc">증거 중심의 전문적 보도와 사회적 역할</div>
+  </div>
+  <div class="callout">
+    <strong>탐사보도 정의:</strong> "사회 변화를 추구하며 문제를 찾아내고 의문을 제기, 증명, 폭로하는 증거 중심의 전문적 보도"
+  </div>
+  <div class="grid3" style="margin-bottom:14px">
+    <div class="stat"><div class="stat-num" style="font-size:15px">과학적</div><div class="stat-label">취재 방법</div></div>
+    <div class="stat"><div class="stat-num" style="font-size:15px">증거·데이터</div><div class="stat-label">수집 및 해석</div></div>
+    <div class="stat"><div class="stat-num" style="font-size:15px">공동체</div><div class="stat-label">발전에 기여하는 특종</div></div>
+  </div>
+  <div class="card-title" style="margin-bottom:10px">대표 사례</div>
+  <div id="case-list"></div>
+</div>
+
+<!-- PARK -->
+<div id="sec-park" class="section">
+  <div class="sec-header">
+    <div class="sec-title">박종철 고문치사 사건</div>
+    <div class="sec-desc">1987년 사건과 동아일보 탐사보도의 역할</div>
+  </div>
+  <div class="grid4" style="margin-bottom:14px">
+    <div class="stat"><div class="stat-num" style="font-size:14px">1987.1.14</div><div class="stat-label">사건 발생</div></div>
+    <div class="stat"><div class="stat-num" style="font-size:14px">남영동</div><div class="stat-label">치안본부 대공분실</div></div>
+    <div class="stat"><div class="stat-num" style="font-size:14px">물고문</div><div class="stat-label">사인 (쇼크사 은폐)</div></div>
+    <div class="stat"><div class="stat-num" style="font-size:14px">6.29 선언</div><div class="stat-label">직선제 도입 계기</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">사건 경과 타임라인</div>
+    <div class="timeline" style="margin-top:12px">
+      <div class="t-item"><div class="t-dot filled"></div><div class="t-date">1987년 1월 14일</div><div class="t-text">서울대생 박종철, 남영동 대공분실에서 물고문으로 사망. 경찰은 '쇼크사'로 은폐 시도</div></div>
+      <div class="t-item"><div class="t-dot filled"></div><div class="t-date">1월 17일</div><div class="t-text">오연상 의사의 '물고문 의심' 발언을 동아일보가 보도 — 진실 규명의 시작</div></div>
+      <div class="t-item"><div class="t-dot filled"></div><div class="t-date">1월 19일</div><div class="t-text">동아일보 1면~사회면 5개면 대대적 보도. 중앙일보 신성호 기자 최초 보도</div></div>
+      <div class="t-item"><div class="t-dot filled"></div><div class="t-date">5월 23일</div><div class="t-text">법무·검찰 고위직이 조작 인지 후 은폐 사실 폭로 → 전면 개각. 강창민 치안본부장 구속</div></div>
+      <div class="t-item"><div class="t-dot filled"></div><div class="t-date">6월</div><div class="t-text">박종철 사망 + 이한열 사망 → 6월 민주항쟁 촉발</div></div>
+      <div class="t-item"><div class="t-dot"></div><div class="t-date">1987년 6월 29일</div><div class="t-text">6.29 선언 → 대통령 직선제 도입. 민주화의 결정적 전환점</div></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">주요 인물</div>
+      <div class="card-sub">
+        <div style="margin-bottom:5px"><strong>오연상 의사</strong> — 물고문 의심 발언 최초 공개</div>
+        <div style="margin-bottom:5px"><strong>신성호 기자</strong> (중앙일보) — 최초 보도</div>
+        <div style="margin-bottom:5px"><strong>남시욱 편집국장</strong> (동아) — 전면 보도 지침</div>
+        <div style="margin-bottom:5px"><strong>최환 검사·정구영 서울지검장</strong> — 수사 진상 규명</div>
+        <div><strong>이부영·김정남</strong> — 재야 운동가, 진상 보완</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">시대적 배경</div>
+      <div class="card-sub">
+        <div style="margin-bottom:5px">1979년 박정희 피살 후 권력 공백</div>
+        <div style="margin-bottom:5px">유신헌법 + 긴급조치 9호 독재 통치</div>
+        <div style="margin-bottom:5px">전두환 신군부 쿠데타 + 계엄령</div>
+        <div>5.18 광주 민주화 운동 탄압</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PUNITIVE -->
+<div id="sec-punitive" class="section">
+  <div class="sec-header">
+    <div class="sec-title">언론사 징벌적 손해배상제도</div>
+    <div class="sec-desc">정의, 찬반 논거, 실제 판결 통계</div>
+  </div>
+  <div class="callout">
+    <strong>제도 정의:</strong> 위법성·의도성·악의성이 명백할 경우 손해액의 최대 3배 징벌 배상 + 정정보도 + 인터넷 기사 열람 차단 청구권 + 악성 댓글 운영 중단 요청권
+  </div>
+  <div class="pc-grid">
+    <div class="pc-box pros">
+      <div class="pc-label p"><i class="ti ti-check"></i> 찬성 입장</div>
+      <div class="pc-item">악의적 허위보도에 강력 제재 필요 (미국 사례)</div>
+      <div class="pc-item">한국 언론 신뢰도 OECD 최하위</div>
+      <div class="pc-item">피해 회복보다 예방이 더 중요</div>
+      <div class="pc-item">무책임한 보도에 사회적 통제 수단 필요</div>
+    </div>
+    <div class="pc-box cons">
+      <div class="pc-label c"><i class="ti ti-x"></i> 반대 입장</div>
+      <div class="pc-item">언론 자유·헌법적 가치 훼손 우려</div>
+      <div class="pc-item">언론중재법 등 기존 제도 이미 존재</div>
+      <div class="pc-item">가짜 뉴스 정의·판단 주체 불명확</div>
+      <div class="pc-item">정치권력의 언론 통제 수단 악용 가능</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">실제 판결 현황 (2009~2018)</div>
+    <div id="verdict-bars" style="margin-top:12px"></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">여론조사 결과</div>
+      <div id="opinion-bars" style="margin-top:8px"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">언론 보도 문제 사례</div>
+      <div class="card-sub">
+        <div style="margin-bottom:10px"><span class="badge badge-warn">조선일보 2013</span><br><span style="font-size:12px;margin-top:4px;display:block">채동욱 혼외 아들 1면 보도 → 총장 5개월 만에 사퇴. 반론권 무시·개인정보 취득 불투명 지적</span></div>
+        <div><span class="badge badge-warn">한겨레 2019</span><br><span style="font-size:12px;margin-top:4px;display:block">윤석열 별장 접대 의혹 1면 → 사과문·정정보도 1면 게재. 2021년 기자 41명 성명서 발표</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TERMS -->
+<div id="sec-terms" class="section">
+  <div class="sec-header">
+    <div class="sec-title">핵심 용어 사전</div>
+    <div class="sec-desc">클릭하여 정의를 확인하세요</div>
+  </div>
+  <div id="term-list"></div>
+</div>
+
+<!-- QUIZ -->
+<div id="sec-quiz" class="section">
+  <div class="sec-header">
+    <div class="sec-title">퀴즈로 복습</div>
+    <div class="sec-desc" id="quiz-desc">전체 내용 10문항</div>
+  </div>
+  <div id="quiz-area"></div>
+</div>
+
+</div>
+
+<script>
+const sections=['overview','legacy','youtube','investigative','park','punitive','terms','quiz'];
+function showSec(id){
+  sections.forEach(s=>{
+    document.getElementById('sec-'+s).classList.toggle('active',s===id);
+  });
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>{
+    b.classList.toggle('active',sections[i]===id);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const trustData=[{name:'JTBC',val:19.9},{name:'유튜브',val:16.4},{name:'KBS',val:14.7},{name:'TV조선',val:4.2}];
+document.getElementById('trust-chart').innerHTML=trustData.map(d=>`
+<div style="margin-bottom:8px">
+  <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+    <span style="font-size:12px;color:var(--text2)">${d.name}</span>
+    <span style="font-size:12px;font-weight:500">${d.val}%</span>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" style="width:${d.val/25*100}%"></div></div>
+</div>`).join('');
+
+const cases=[
+  {name:'테라노스 (《배드 블러드》)',badge:'badge-red',label:'사기 폭로',desc:'스타트업 테라노스와 엘리자베스 홈스의 사기 적발. 투자 7,100억 원, 기업가치 10조 원 허위 부풀리기 폭로.'},
+  {name:'미라이 학살 (1968)',badge:'badge-warn',label:'퓰리처상',desc:'미군의 베트남 미라이 마을 민간인 504명 학살. 세이모어 허시 탐사보도로 1970년 퓰리처상 수상.'},
+  {name:'아부 그라이브 포로 학대 (2004)',badge:'badge-warn',label:'미군 도덕성',desc:'미군 포로 학대 폭로. 뉴요커 3주 연속 커버스토리, 미군 도덕성에 결정적 타격.'},
+  {name:'노근리 학살 (1950)',badge:'badge-blue',label:'특별법 제정',desc:'한국전쟁 중 양민 300여 명 학살. 1999년 미군 문서·증언 공개 → 2004년 특별법 제정.'},
+  {name:'싱크탱크 뒷거래',badge:'badge-blue',label:'독립성 문제',desc:'브루킹스연구소 후원 기업과 로비 활동 폭로. 싱크탱크의 독립성 상실, 기업 로비스트 전락 문제 제기.'},
+];
+document.getElementById('case-list').innerHTML=cases.map(c=>`
+<div class="card">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+    <span class="badge ${c.badge}">${c.label}</span>
+    <span class="card-title" style="margin:0">${c.name}</span>
+  </div>
+  <div class="card-sub">${c.desc}</div>
+</div>`).join('');
+
+const verdictData=[
+  {label:'명예훼손 원고 승소율',val:49.13},{label:'손해배상 원고 승소율',val:39.7},
+  {label:'1,000만원 이하 인용율',val:70.7},{label:'언론인 평균 승소율',val:60.2},
+];
+document.getElementById('verdict-bars').innerHTML=verdictData.map(d=>`
+<div style="margin-bottom:10px">
+  <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+    <span style="font-size:12px;color:var(--text2)">${d.label}</span>
+    <span style="font-size:12px;font-weight:500">${d.val}%</span>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" style="width:${d.val}%"></div></div>
+</div>`).join('');
+
+const opinionData=[
+  {label:'징벌적 배상 찬성',val:80},{label:'언론개혁 공감',val:67},{label:'징벌적 배상 반대',val:13},
+];
+document.getElementById('opinion-bars').innerHTML=opinionData.map(d=>`
+<div style="margin-bottom:10px">
+  <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+    <span style="font-size:12px;color:var(--text2)">${d.label}</span>
+    <span style="font-size:12px;font-weight:500">${d.val}%</span>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" style="width:${d.val}%"></div></div>
+</div>`).join('');
+
+const terms=[
+  {word:'레거시 미디어',def:'신문·방송 등 전통적 미디어. 뉴 미디어 등장으로 점차 쇠퇴 중. 유통망 독점이 경쟁력의 본질이었으나 플랫폼 해체로 약화.'},
+  {word:'게이트키핑',def:'미디어가 정보 생산·유통 과정에서 특정 정보를 선택하거나 차단하는 기능. 유튜브 등 뉴 미디어 시대에는 이 기능이 약화되어 가짜 뉴스 양산 우려.'},
+  {word:'대안 우파',def:"우익 극단주의 이데올로기 집단. 유튜브 추천 알고리즘을 통해 점진적으로 영향력 확대. '빨간 약' 비유로 극단화 과정 설명."},
+  {word:'추천 알고리즘',def:"플랫폼이 이용자 취향에 맞는 콘텐츠를 자동 추천하는 시스템. 극단적 콘텐츠로의 점진적 노출을 촉진하는 '토끼 굴 안내자' 역할."},
+  {word:'크라이스트처치콜',def:'2019년 뉴질랜드 총기 난사 사건 이후 17개국 및 주요 IT 기업이 온라인 극단주의·테러 콘텐츠 즉각 차단을 합의한 국제 협력 선언. 미국은 불참.'},
+  {word:'긴급조치 9호',def:'유신체제에서 발동된 법률. 유신헌법 반대·비방 행위를 금지하고 위반 시 영장 없이 체포 가능. 전두환 신군부 집권의 배경이 되는 독재적 통치 수단.'},
+  {word:'뉴스 메이킹',def:'언론이 단순한 뉴스 수집(게더링)을 넘어 이슈를 창조하고 편향적으로 보도하는 행위. 권력 비판·견제 기능 상실과 신뢰도 하락의 원인.'},
+  {word:'디지털 네이티브',def:'디지털 미디어 환경에서 자란 10~20대 세대. 유튜브 이용률 86%로, 이들에게 유튜브는 뉴스 소비의 주요 플랫폼.'},
+  {word:'고문치사',def:'고문으로 인해 사망에 이른 사건. 박종철 사건에서 물고문에 의한 사망으로 최초 보도. 동아일보 탐사보도로 진실이 규명됨.'},
+  {word:'탐사보도',def:'사회 변화를 추구하며 문제를 찾아내고 의문을 제기·증명·폭로하는 증거 중심의 전문적 보도. 단순 특종이 아닌 공동체 발전에 기여하는 보도여야 함.'},
+];
+document.getElementById('term-list').innerHTML=terms.map((t,i)=>`
+<div class="term-item">
+  <div class="term-head" onclick="toggleTerm(${i})">
+    <span class="term-word">${t.word}</span>
+    <i class="ti ti-chevron-down chevron" id="chev-${i}"></i>
+  </div>
+  <div class="term-body" id="tbody-${i}">${t.def}</div>
+</div>`).join('');
+
+function toggleTerm(i){
+  document.getElementById('tbody-'+i).classList.toggle('open');
+  document.getElementById('chev-'+i).classList.toggle('open');
+}
+
+const quizData=[
+  {q:'탐사보도의 핵심 요소가 아닌 것은?',opts:['증거 중심의 취재','과학적 방법론','속보 위주의 단신 보도','사회 변화 추구'],ans:2,exp:'탐사보도는 속보가 아닌 증거·데이터에 기반한 심층 보도. 공동체 발전과 개선에 기여하는 특종이어야 함.'},
+  {q:'2019년 크라이스트처치 총기 난사 사건에서 범행을 생중계한 플랫폼은?',opts:['유튜브','트위터','페이스북','인스타그램'],ans:2,exp:'백인 우월주의자가 페이스북 라이브로 범행을 생중계. 이 사건을 계기로 크라이스트처치콜이 선언됨.'},
+  {q:'박종철 고문치사 사건이 계기가 된 역사적 선언은?',opts:['4.19 혁명','5.18 광주 민주화 운동','6.29 선언','10.26 사건'],ans:2,exp:'박종철 사망과 이한열 사망이 6월 민주항쟁을 촉발하고 6.29 선언으로 대통령 직선제가 도입됨.'},
+  {q:'뉴스 소비 매체 비율 1위는?',opts:['TV (22.8%)','스마트폰 (52.6%)','PC (20.6%)','신문 (2.8%)'],ans:1,exp:'스마트폰이 52.6%로 1위. 특히 20대는 70.6%가 스마트폰으로 뉴스를 소비.'},
+  {q:'크라이스트처치콜에 참여하지 않은 국가는?',opts:['영국','독일','미국','프랑스'],ans:2,exp:'트럼프 행정부는 소셜미디어 검열에 반대하는 입장으로 크라이스트처치콜에 불참.'},
+  {q:'징벌적 손해배상제도에서 배상 상한은 실제 손해액의 최대 몇 배인가?',opts:['2배','3배','5배','10배'],ans:1,exp:'위법성·의도성·악의성이 명백할 경우 손해액의 최대 3배 배상. 정정보도·인터넷 차단 청구권도 포함.'},
+  {q:'유튜브 추천 알고리즘의 부작용을 가리키는 비유 표현은?',opts:['파란 약','빨간 약','노란 약','초록 약'],ans:1,exp:"'빨간 약' 비유 — 매트릭스에서 진실을 각성하는 빨간 약처럼, 무심코 시작해 점점 극단적 세계관에 빠지는 과정."},
+  {q:'미디어가 정보 생산·유통 과정에서 특정 정보를 선택하거나 차단하는 기능은?',opts:['뉴스 메이킹','게이트키핑','뉴스 게더링','의제 설정'],ans:1,exp:'게이트키핑 — 전통 언론의 핵심 기능. 뉴 미디어 시대에 이 기능이 약화되어 가짜 뉴스 양산이 심화됨.'},
+  {q:'2009~2018년 실제 판결에서 손해배상 원고 승소율은?',opts:['약 20%','약 39.7%','약 60%','약 80%'],ans:1,exp:'손해배상 사건 원고 승소율 약 39.7%. 청구액 평균 2억여 원 대비 인용액은 1,946만 원(약 1/10 수준).'},
+  {q:'유신체제에서 헌법 반대·비방을 금지하고 영장 없는 체포를 허용한 조치는?',opts:['계엄령','긴급조치 9호','국가보안법','군사 반란죄'],ans:1,exp:'긴급조치 9호 — 유신헌법 반대·비방 행위 금지, 위반 시 영장 없이 체포 가능. 박종철 사건의 시대적 배경.'},
+];
+
+let cur=0,score=0,answered=false;
+function renderQuiz(){
+  if(cur>=quizData.length){
+    document.getElementById('quiz-area').innerHTML=`
+    <div class="score-box">
+      <div style="font-size:40px;font-weight:500;margin-bottom:8px">${score}/${quizData.length}</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:20px">${score>=8?'아주 잘했어요! 시험 준비 완료입니다.':score>=6?'잘했어요! 틀린 항목을 한 번 더 복습하세요.':'아직 조금 더 복습이 필요해요.'}</div>
+      <button class="q-btn" onclick="cur=0;score=0;answered=false;renderQuiz()">다시 풀기</button>
+    </div>`;
+    return;
+  }
+  const d=quizData[cur];
+  document.getElementById('quiz-desc').textContent=`${cur+1} / ${quizData.length} 문항`;
+  document.getElementById('quiz-area').innerHTML=`
+  <div class="card">
+    <div class="quiz-q">${cur+1}. ${d.q}</div>
+    <div class="quiz-opts">${d.opts.map((o,i)=>`<button class="quiz-opt" onclick="pick(${i})">${o}</button>`).join('')}</div>
+    <div class="quiz-explain" id="qexp">${d.exp}</div>
+  </div>
+  <div class="quiz-nav">
+    <span class="quiz-prog">${score}점 / ${cur}문항 완료</span>
+    <button class="q-btn" id="qnext" onclick="nextQ()" style="display:none">다음 →</button>
+  </div>`;
+}
+function pick(i){
+  if(answered)return;
+  answered=true;
+  const d=quizData[cur];
+  document.querySelectorAll('.quiz-opt').forEach((o,j)=>{
+    if(j===d.ans)o.classList.add('correct');
+    else if(j===i&&i!==d.ans)o.classList.add('wrong');
+    o.style.cursor='default';
+  });
+  if(i===d.ans)score++;
+  document.getElementById('qexp').style.display='block';
+  document.getElementById('qnext').style.display='inline-block';
+}
+function nextQ(){cur++;answered=false;renderQuiz();}
+renderQuiz();
+</script>
+</body>
+</html>

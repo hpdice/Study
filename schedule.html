@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>학습 일정 — 굿메디슨 중심 취업 준비</title>
+<style>
+:root{
+  --bg:#f7f7f5;--surface:#fff;--line:#e3e3df;--ink:#1c1c1a;--ink2:#4a4a46;--muted:#77776f;--accent:#2457c5;
+  --proj:#2457c5;--cote:#b45309;--cs:#0f766e;--sql:#7c3aed;--exam:#be123c;--rev:#4d7c0f;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#161615;--surface:#1f1f1d;--line:#34342f;--ink:#efeee9;--ink2:#c3c2ba;--muted:#928f85;--accent:#7ea2ee;
+  --proj:#7ea2ee;--cote:#f0b25e;--cs:#5fd0c4;--sql:#b99cf5;--exam:#f58aa5;--rev:#a3d46a}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 64px;display:flex;flex-direction:column;gap:20px}
+h1{margin:0;font-size:24px}
+.lede{margin:4px 0 0;color:var(--muted);font-size:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.card h2{margin:0 0 10px;font-size:16px}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline}
+.top h2{font-size:19px;margin:0}
+.when{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.dates{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.dates span{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--muted)}
+.dates span.soon{border-color:var(--exam);color:var(--exam)}
+.weeks{display:flex;gap:6px;margin-bottom:14px}
+.weeks button{flex:1;border:0;background:none;padding:0;cursor:pointer;display:flex;flex-direction:column;gap:4px;font:inherit;font-size:11.5px;color:var(--muted);font-family:var(--mono)}
+.weeks button[aria-current="true"]{color:var(--accent);font-weight:600}
+.bar{height:5px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.days{display:flex;flex-direction:column;gap:12px}
+.day{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start}
+.dl{display:flex;flex-direction:column;align-items:center;padding-top:8px;line-height:1.25}
+.dl b{font-size:15px}.dl small{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.dl .hrs{margin-top:4px;font-size:11px;color:var(--muted)}
+.day.today .dl b{color:var(--accent)}
+.day.today .todo button{border-color:var(--accent)}
+.day.light .dl{opacity:.7}
+.todo{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.todo button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:9px 12px;text-align:left;cursor:pointer;display:grid;grid-template-columns:16px 1fr;gap:10px;align-items:start;font:inherit;font-size:14px;line-height:1.4}
+.todo button:hover{border-color:var(--accent)}
+.todo button.big{grid-column:1/-1}
+.chk{width:16px;height:16px;border:2px solid var(--muted);border-radius:4px;margin-top:2px;position:relative}
+.chk.on{background:var(--accent);border-color:var(--accent)}
+.chk.on::after{content:"";position:absolute;left:3px;top:0;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+button.done .txt{color:var(--muted);text-decoration:line-through}
+.tag{display:block;font-size:11.5px;font-weight:600;margin-bottom:1px}
+.tag::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:currentColor}
+.t-proj{color:var(--proj)}.t-cote{color:var(--cote)}.t-cs{color:var(--cs)}.t-sql{color:var(--sql)}.t-exam{color:var(--exam)}.t-rev{color:var(--rev)}
+.note{margin:14px 0 0;font-size:13.5px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600;font-size:12px}
+ul{margin:0;padding-left:20px;color:var(--ink2);font-size:14px}
+li{margin:3px 0}
+.foot{font-size:12.5px;color:var(--muted)}
+@media (max-width:600px){.day{grid-template-columns:48px 1fr;gap:8px}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>학습 일정</h1>
+    <p class="lede">굿메디슨 프로젝트 학습을 중심에 두고 코테·CS·SQL을 곁들인 계획 · 2026-09-30 ~ 11-17 · 하루 약 6시간 중 프로젝트 약 3시간 · 코테·CS는 10/5부터</p>
+  </header>
+
+  <section class="card" id="week" aria-label="주간 계획"></section>
+
+  <section class="card">
+    <h2>기준 시간표</h2>
+    <table>
+      <tr><th>요일</th><th>수업</th><th>학습 가능</th><th>시간</th><th>프로젝트</th></tr>
+      <tr><td>월</td><td>16:30~18:00</td><td>오전~16:00, 18:30 이후</td><td>약 5h</td><td>2.5h</td></tr>
+      <tr><td>화 · 목</td><td>없음</td><td>종일</td><td>6h</td><td>3h</td></tr>
+      <tr><td>수</td><td>10:30~12:00</td><td>12:30~17:30 (18시 이후는 쓰지 않음)</td><td>약 5h</td><td>2.5h</td></tr>
+      <tr><td>금</td><td>없음</td><td>종일</td><td>6h</td><td>3h</td></tr>
+      <tr><td>토</td><td>없음</td><td>종일</td><td>6h</td><td>3.5h</td></tr>
+      <tr><td>일</td><td>없음</td><td>프로젝트 위주</td><td>3h</td><td>3h</td></tr>
+    </table>
+    <p class="note">코테와 CS는 한 주 미뤄 다음 주 월요일(10/5)부터 시작한다. 포스터 마감일(10/15~16)과 시연 영상 주간(10/26~30)에는 코테·CS를 넣지 않고(1문제 복습만), 그 분량은 뒤로 밀려 11월 중순까지 이어진다. 프로젝트 학습은 하루 2.5~3.5시간이다. 핵심 내용(기본기·P·O·S·30장)은 10/23에 끝내고, 10/24 이후는 복습만 한다. 수요일에 못 채운 분량은 목요일로 넘긴다. 학술제 주간(10/12~18, 10/26~11/1)은 학술제를 우선한다.</p>
+  </section>
+
+  <section class="card">
+    <h2>영역별 기준</h2>
+    <ul>
+      <li><b class="t-proj">프로젝트</b> — 굿메디슨 학습 가이드(기본기 읽기, 문제집 P·O·S). 이 일정에서 가장 큰 비중이다.</li>
+      <li><b class="t-cote">코테</b> — 프로그래머스 고득점 Kit를 유형별로 하루 1.5시간. 언어는 Python 하나로 통일. 학습 방법은 아래 "코딩테스트 학습법" 참고.</li>
+      <li><b class="t-cs">CS</b> — 『면접을 위한 CS 전공지식 노트』를 하루 0.5~1시간씩, 소리 내어 답해 본다.</li>
+      <li><b class="t-sql">SQL</b> — 프로그래머스 SQL 고득점 Kit, 이후 윈도우 함수. 프로젝트 S 문제집과 겹친다.</li>
+      <li><b class="t-exam">학술제</b> — 포스터(10/16), 시연 영상(10/26~30), 본선(11/10).</li>
+      <li><b class="t-rev">복습</b> — 틀린 문제와 막힌 개념 정리.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>코딩테스트 학습법</h2>
+    <p class="note" style="margin-top:0">기억으로 푸는 단계가 아니라 학습이 필요한 상태를 전제로 한다. 유형별 개념과 템플릿을 먼저 익히고, 그 위에 문제를 쌓는다.</p>
+    <ul>
+      <li><b>개념·템플릿 먼저.</b> 유형 첫날에는 해당 도구를 손으로 써 본 뒤 문제를 푼다.</li>
+      <li><b>막히면 해설을 본다.</b> 풀이 시간 상한은 Lv1 20분, Lv2 30~40분. 해설을 본 문제는 다음 날 해설 없이 다시 푼다.</li>
+      <li><b>푼 문제보다 다시 푼 문제.</b> 처음 푼 건 해설을 따라 한 것이라 기억에 남지 않는다.</li>
+      <li><b>코테 시작(10/5) 후 첫 2주(10/5~10/18)는 학습용, 이후는 시간 재기.</b> 모의 1·2회는 막히면 해설을 허용하고 걸린 시간만 기록한다. 3회부터 해설 금지.</li>
+    </ul>
+    <p class="note"><b>하루 1.5시간 구조</b></p>
+    <table>
+      <tr><th>구간</th><th>하는 일</th></tr>
+      <tr><td>처음 20~30분</td><td>어제 틀리거나 해설을 본 문제를 해설 없이 다시 풀기</td></tr>
+      <tr><td>다음 20분</td><td>오늘 유형의 개념·템플릿 정리 (유형 첫날만)</td></tr>
+      <tr><td>나머지 40~50분</td><td>신규 문제 1~2개</td></tr>
+      <tr><td>마지막 5분</td><td>오답 노트에 기록</td></tr>
+    </table>
+    <p class="note"><b>오답 노트 (한 문제당 3줄)</b> — 막힌 지점(개념을 몰랐나 · 구현이 꼬였나 · 시간 초과였나) / 풀이 핵심 한 줄 / 다시 볼 날짜(1·3·7일 후)</p>
+    <p class="note"><b>Python 필수 도구</b></p>
+    <table>
+      <tr><th>유형</th><th>필요한 것</th></tr>
+      <tr><td>해시</td><td><code>dict</code>, <code>Counter</code>, <code>defaultdict</code></td></tr>
+      <tr><td>스택/큐</td><td><code>list</code>(스택), <code>collections.deque</code>(큐)</td></tr>
+      <tr><td>정렬</td><td><code>sorted(key=...)</code>, 람다</td></tr>
+      <tr><td>완전탐색</td><td><code>itertools.permutations</code>, <code>combinations</code></td></tr>
+      <tr><td>그리디</td><td>정렬 후 선택 패턴</td></tr>
+      <tr><td>힙</td><td><code>heapq</code></td></tr>
+      <tr><td>DFS/BFS</td><td>재귀, <code>sys.setrecursionlimit</code>, 방문 배열</td></tr>
+      <tr><td>이분탐색</td><td><code>bisect</code>, 직접 구현</td></tr>
+      <tr><td>DP</td><td>점화식, 메모이제이션 배열</td></tr>
+    </table>
+    <p class="note"><b>현실적인 한계</b> — 일정의 코테 시간(약 42시간)으로는 신규 문제를 약 30문제 안팎 푼다. 합격선은 회사마다 달라 정확한 기준은 없고, 일반적으로는 수십~백 문제 이상 푼다고 알려져 있다. 6주 안에는 레벨 2 안정화가 현실적이고 레벨 3은 어려울 수 있어서, 일정 이후에도 이어가야 한다.</p>
+  </section>
+
+  <p class="foot">체크 상태는 이 브라우저에 저장됩니다. 항목의 시간(h)은 목표 배분이며, 그날 컨디션에 맞춰 조정합니다.</p>
+</main>
+
+<script>
+const P = (t, h) => ["proj", "프로젝트", t, h];
+const C = (t, h) => ["cote", "코테", t, h];
+const N = (t, h) => ["cs", "CS", t, h];
+const S = (t, h) => ["sql", "SQL", t, h];
+const X = (t, h) => ["exam", "학술제", t, h];
+const R = (t, h) => ["rev", "복습", t, h];
+
+// [날짜, ...항목]  항목은 [종류, 라벨, 내용, 시간(h)]
+const PLAN = [
+  {w:1, from:"2026-09-30", to:"2026-10-04", note:"이론을 읽으며 실제 코드와 대조하고, 인증 문제 P01~P04를 실전→리뷰 순으로 푼다. 일요일에 마친다.", days:[
+    ["2026-09-30", P("시작하기·직무지도·문제해결 방법론 + 기본기 01 읽기·요약",2.5)],
+    ["2026-10-01", P("기본기 02·03 읽기 + main.py·models 코드 대조 + 면접 질문 답하기",3), S("SELECT 기초",1)],
+    ["2026-10-02", P("기본기 04 읽기 + 실습 환경 준비 + P01 실전 + 인증 코드 대조",3)],
+    ["2026-10-03", P("P02·P03 실전 → 리뷰 모드로 설명",3.5), R("이번 주 틀린 문제 정리",1)],
+    ["2026-10-04", P("P04 + P01~P04 리뷰 모드 + 기본기 05 읽기",3)]]},
+  {w:2, from:"2026-10-05", to:"2026-10-11", note:"\"판정은 규칙\"을 코드로 설명할 수 있게. P 문제를 이 주에 끝낸다(P11·P12는 시연 영상 전에 main 반영).", days:[
+    ["2026-10-05", P("기본기 06·07 읽기 + 판정·복약함 코드 대조 + P05 실전",2.5), C("[개념·템플릿 + 문제] 해시: dict·Counter 정리 → Lv1 (처음 2주는 해설 보며 학습 허용)",1.5), N("네트워크: TCP/UDP, HTTP",1)],
+    ["2026-10-06", P("P06·P07 실전 → 리뷰 + 포스터용 앱 흐름 복습",3), C("[복습 + 문제] 해시 Lv1 해설 없이 다시 → Lv2",1.5), S("SUM·MAX·MIN",1), N("HTTPS, 브라우저 동작 흐름",0.5)],
+    ["2026-10-07", P("P08·P09 실전 → 리뷰",2.5), C("[개념·템플릿 + 문제] 스택/큐: list·deque 정리 → Lv1~2",1.5), N("쿠키·세션",1)],
+    ["2026-10-08", P("기본기 08 읽기 + P10 + P05~P10 리뷰 모드",3), S("GROUP BY",1), N("프로세스와 스레드",1)],
+    ["2026-10-09", P("기본기 09·10 읽기 + P11 실전",3), C("[모의 1회] Lv1 3문제 — 학습용: 막히면 해설 허용, 걸린 시간만 기록",2), N("동기/비동기, 뮤텍스",0.5)],
+    ["2026-10-10", P("P12 실전 + P11·P12 main 반영 + 테스트",3.5), C("[복습 + 문제] 스택/큐 해설 본 문제 다시 → Lv2",1.5), R("한 주 정리",1)],
+    ["2026-10-11", P("기본기 11 읽기 + P11·P12 정답 해설 설명 + 면접 질문 답하기",3)]]},
+  {w:3, from:"2026-10-12", to:"2026-10-18", note:"O01~O12를 이 주에 끝낸다. 포스터 마감 주간이라 15·16일은 학술제 우선.", days:[
+    ["2026-10-12", P("O01·O04·O02 (시연 영상 전에 먼저 점검)",2.5), C("[개념·템플릿 + 문제] 정렬: sorted(key)·람다 정리 → 문제",1.5), N("메모리 관리, 가상 메모리",1)],
+    ["2026-10-13", P("O03·O05·O06·O07",3), C("[개념·템플릿 + 문제] 완전탐색: permutations·combinations → Lv1",1.5), S("IS NULL",1), N("CPU 스케줄링",0.5)],
+    ["2026-10-14", P("O08·O09·O10",2.5), C("[복습 + 문제] 완전탐색 복습 → Lv2",1.5), N("복습 + 소리 내어 답하기",1)],
+    ["2026-10-15", X("포스터 준비 (프로젝트 학습 쉼)",3), C("[복습] 포스터 주간 — 오답 노트 1문제만",1)],
+    ["2026-10-16", X("포스터 마감",2)],
+    ["2026-10-17", P("O11 (현재 결함 — 메모)·O12 + O 문제 전체 리뷰",3.5), C("[복습 + 문제] 오답 노트 1·3·7일 복습 → 정렬 Lv2",1.5), R("오답 정리",1)],
+    ["2026-10-18", P("기본기 12 읽기 + 30장 앞부분 (개념 1~6)",3)]]},
+  {w:4, from:"2026-10-19", to:"2026-10-25", note:"S1~S9를 이 주에 끝낸다. 10/23에 프로젝트 핵심 내용 완료 — 이후는 복습만.", days:[
+    ["2026-10-19", P("30장 나머지 (개념 7~13) + 기본기 13 읽기",2.5), C("[개념·템플릿 + 문제] 그리디: 정렬 후 선택 패턴 → Lv1 (이때부터 문제당 시간 재기)",1.5), N("DB: 인덱스",1)],
+    ["2026-10-20", P("S1~S3",3), C("[복습 + 문제] 그리디 복습 → Lv2 (시간 재기)",1.5), S("JOIN",1), N("트랜잭션·ACID",0.5)],
+    ["2026-10-21", P("S4·S5",2.5), C("[개념·템플릿 + 문제] 힙: heapq 정리 → 문제 (시간 재기)",1.5), N("정규화",1)],
+    ["2026-10-22", P("S6·S7",3), S("STRING·DATE",1), N("자료구조: 배열·리스트·스택·큐",1)],
+    ["2026-10-23", P("S8·S9 + S 쿼리 전체 정리 (프로젝트 핵심 내용 완료)",2.5), X("시연 영상 대본",1), C("[모의 2회] Lv1~2 — 학습용: 막히면 해설 허용, 걸린 시간만 기록",2), N("해시·트리·힙",0.5)],
+    ["2026-10-24", P("복습: P01~P12 리뷰 모드 1회전",3), X("시연 영상 준비",1.5), C("[모의 3회] Lv2 중심 — 시간 재서 풀기, 해설 금지",1.5)],
+    ["2026-10-25", P("복습: 기본기 01~04 요약 노트 다시 읽기",1), X("시연 영상 촬영 준비",2)]]},
+  {w:5, from:"2026-10-26", to:"2026-11-01", note:"시연 영상 주간(10/26~30)은 프로젝트 복습만 가볍게. 새 내용 없음.", days:[
+    ["2026-10-26", P("복습: 기본기 05~08 + 코드 대조",1), X("시연 영상 촬영 시작",2)],
+    ["2026-10-27", P("복습: 기본기 09~13 + 면접 질문 답하기",1.5), X("시연 영상",2), C("[복습] 오답 노트 1문제",0.5)],
+    ["2026-10-28", P("복습: 30장 30초 답변 소리 내어 연습",1.5), X("시연 영상",1.5)],
+    ["2026-10-29", P("복습: O01~O12 진단 순서 다시 적기",1.5), X("시연 영상",2), C("[복습] 오답 노트 1문제",0.5)],
+    ["2026-10-30", X("시연 영상 마감",2)],
+    ["2026-10-31", P("복습: 리뷰 모드 P01~P06",3.5), C("[개념·템플릿 + 문제] DFS/BFS: 재귀·방문 배열 정리 → Lv2",1.5), R("한 주 정리",1)],
+    ["2026-11-01", P("복습: 리뷰 모드 P07~P12 + 정답 해설 다시 설명",3)]]},
+  {w:6, from:"2026-11-02", to:"2026-11-09", note:"본선 11/10 전날까지. 프로젝트는 복습과 면접 질문 답하기만, 새 내용은 없다.", days:[
+    ["2026-11-02", P("복습: S1~S9 쿼리를 보지 않고 다시 작성",2.5), C("[복습 + 문제] DFS/BFS 복습 → Lv2~3",1.5), N("정렬·시간복잡도",1)],
+    ["2026-11-03", P("복습: 장별 직접 만든 퀴즈 5개씩 + 약한 장 복습",3), C("[개념·템플릿 + 문제] 이분탐색: bisect·직접 구현 → 문제",1.5), S("윈도우 함수",1), N("복습",0.5)],
+    ["2026-11-04", P("복습: 약한 문제 다시 실전 모드로 (실패하는 테스트 먼저 작성)",2.5), C("[복습 + 문제] 이분탐색 복습 → 그래프 문제",1.5), N("복습",1)],
+    ["2026-11-05", P("복습: 면접 질문 답하기 — P·O·S 전체",3), S("복습",1), N("전체 복습",1)],
+    ["2026-11-06", P("복습: 약한 문제의 면접 질문 소리 내어 답하기 (녹음 후 듣기)",2), X("발표 준비",2), C("[모의 4회] Lv2 중심 — 시간 재서 풀기, 해설 금지",1.5), N("소리 내어 답하기",0.5)],
+    ["2026-11-07", P("복습: 취약 부분 마무리",3), X("발표 리허설",2), R("정리",1)],
+    ["2026-11-08", X("발표 리허설 + 예상 Q&A",3)],
+    ["2026-11-09", X("최종 리허설 1회 — 새 내용 금지",2), C("[개념·템플릿 + 문제] DP 입문: 점화식·메모이제이션 → Lv1~2",1.5), N("면접 질문 답하기",1)]]},
+  {w:7, from:"2026-11-10", to:"2026-11-17", note:"코테·CS를 한 주 미뤄서 생긴 이월분. 11/10 본선 당일은 학술제만 한다.", days:[
+    ["2026-11-10", X("본선 — 학술제 당일",3)],
+    ["2026-11-11", C("[복습 + 문제] DP 복습 → Lv2",1.5), N("복습",0.5)],
+    ["2026-11-12", C("[복습] 오답 노트 전체 (1·3·7일 주기)",1.5), N("복습",0.5)],
+    ["2026-11-13", C("[모의 5회] Lv2 — 시간 재서 풀기",1.5)],
+    ["2026-11-14", C("[복습 + 문제] 약한 유형 집중 (오답 노트 기준)",1.5)],
+    ["2026-11-16", C("[모의 6회] Lv2 — 시간 재서 풀기",1.5)],
+    ["2026-11-17", C("[복습] 오답 노트 정리",1.5)]]},
+];
+const EVENTS = [["포스터","2026-10-16"],["시연 영상","2026-10-26"],["본선","2026-11-10"]];
+const KEY = "study-schedule-v2";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const day = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+const md = s => s.slice(5).replace("-", "/");
+const DOW = ["일","월","화","수","목","금","토"];
+const today = new Date(); today.setHours(0, 0, 0, 0);
+const nowW = (PLAN.find(p => today >= day(p.from) && today <= day(p.to)) || (today < day(PLAN[0].from) ? PLAN[0] : PLAN[PLAN.length - 1])).w;
+let pick = null;
+
+const idOf = (date, i) => date + "|" + i;
+const hrs = items => items.reduce((a, it) => a + it[3], 0);
+function pct(p){
+  let tot = 0, done = 0;
+  for (const [date, ...items] of p.days) items.forEach((it, i) => { tot += it[3]; if (state[idOf(date, i)]) done += it[3]; });
+  return tot ? 100 * done / tot : 0;
+}
+function render(){
+  const w = PLAN.find(p => p.w === (pick || nowW));
+  const dd = s => Math.round((day(s) - today) / 864e5);
+  const dates = EVENTS.map(([n, s]) => { const k = dd(s); return `<span class="${k >= 0 && k <= 10 ? "soon" : ""}">${n} ${md(s)} · ${k > 0 ? "D-" + k : k === 0 ? "오늘" : "지남"}</span>`; }).join("");
+  const weeks = PLAN.map(p => `<button type="button" data-week="${p.w}" aria-current="${p.w === w.w}"><span>${p.w}주${p.w === nowW ? " ·지금" : ""}</span><span class="bar"><i style="width:${pct(p)}%"></i></span></button>`).join("");
+  const rows = w.days.map(([date, ...items]) => {
+    const dt = day(date), isToday = +dt === +today, h = hrs(items);
+    const btns = items.map((it, i) => {
+      const on = !!state[idOf(date, i)];
+      return `<button type="button" class="${it[0] === "proj" ? "big " : ""}${on ? "done" : ""}" data-id="${idOf(date, i)}"><span class="chk${on ? " on" : ""}"></span><span class="txt"><span class="tag t-${it[0]}">${it[1]} · ${it[3]}h</span>${esc(it[2])}</span></button>`;
+    }).join("");
+    return `<div class="day${isToday ? " today" : ""}${h <= 3 ? " light" : ""}"><div class="dl"><b>${DOW[dt.getDay()]}</b><small>${md(date)}${isToday ? " · 오늘" : ""}</small><span class="hrs">${h}h</span></div><div class="todo">${btns}</div></div>`;
+  }).join("");
+  document.getElementById("week").innerHTML =
+    `<div class="top"><h2>${w.w === nowW ? "이번 주" : w.w + "주차"} 할 일</h2><span class="when">${md(w.from)} ~ ${md(w.to)}</span></div>` +
+    `<div class="dates">${dates}</div><div class="weeks">${weeks}</div><div class="days">${rows}</div><p class="note">${esc(w.note)}</p>`;
+}
+document.getElementById("week").addEventListener("click", e => {
+  const t = e.target.closest("button"); if (!t) return;
+  if (t.dataset.week) { pick = +t.dataset.week; render(); return; }
+  if (t.dataset.id) { if (state[t.dataset.id]) delete state[t.dataset.id]; else state[t.dataset.id] = true; save(); render(); }
+});
+render();
+</script>
+</body>
+</html>
